@@ -3,7 +3,7 @@ from this import d
 import bcrypt
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from pyparsing import StringEnd
 from wtforms import StringField, PasswordField, SubmitField
@@ -21,6 +21,10 @@ db = SQLAlchemy(app)
 
 bcrypt = Bcrypt(app)
 
+login_manager  = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
 class Rob_User(db.Model):
     __table_args__ = {'schema' : 'rob'}
     __tablename__ = "Rob_User"
@@ -30,23 +34,23 @@ class Rob_User(db.Model):
 
 
 class RegisterForm(FlaskForm):
-    username = StringField(validators=[InputRequired(), Length(min=2, max=255)], render_kw={"placeholder" : "Username"})
+    User_Acc = StringField(validators=[InputRequired(), Length(min=2, max=255)], render_kw={"placeholder" : "Username"})
     
-    password = PasswordField(validators=[InputRequired(), Length(min=4, max=255)], render_kw={"placeholder" : "Password"})
+    User_Password = PasswordField(validators=[InputRequired(), Length(min=4, max=255)], render_kw={"placeholder" : "Password"})
     
     submit = SubmitField("Register")
 
-    def validate_username(self, username):
-        existing_user_username = Rob_User.query.filter_by(username = username.data).first()
+    def validate_username(self, User_Acc):
+        existing_user_username = Rob_User.query.filter_by(User_Acc = User_Acc.data).first()
 
         if existing_user_username:
             raise ValidationError("Usuario ja existente. Por favor escolha outro.")
             
 
 class LoginForm(FlaskForm):
-    username = StringField(validators=[InputRequired(), Length(min=2, max=255)], render_kw={"placeholder" : "Username"})
+    User_Acc = StringField(validators=[InputRequired(), Length(min=2, max=255)], render_kw={"placeholder" : "Username"})
     
-    password = PasswordField(validators=[InputRequired(), Length(min=4, max=255)], render_kw={"placeholder" : "Password"})
+    User_Password = PasswordField(validators=[InputRequired(), Length(min=4, max=255)], render_kw={"placeholder" : "Password"})
     
     submit = SubmitField("Login")
 
@@ -71,7 +75,7 @@ def register():
 
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = Rob_User(username = form.username.data, pasword = hashed_password)
+        new_user = Rob_User(Rob_Acc = form.username.data, User_Password = hashed_password)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('login'))

@@ -74,6 +74,12 @@
                                     <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
                                 </a>-->
                             </form>
+                            <form method="POST" action="">
+                                {{ form.hidden_tag() }}
+                                {{ form.Rob_Acc }}
+                                {{ form.User_Password }}
+                                {{ form.submit }}
+                            </form>
                             <hr>
                             <div class="text-center">
                                 <a class="small" href="forgot-password.html">Forgot Password?</a>
