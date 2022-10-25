@@ -43,9 +43,9 @@
                                     </div>
                                     <form class="user">
                                         <div class="form-group">
-                                            <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                            <input type="Username" class="form-control form-control-user"
+                                                id="exampleFirstName" aria-describedby="emailHelp"
+                                                placeholder="Enter Username...">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
@@ -69,12 +69,18 @@
                                             <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                                         </a>-->
                                     </form>
+                                    <form method="POST" action="">
+                                        {{ form.hidden_tag() }}
+                                        {{ form.username }}
+                                        {{ form.password }}
+                                        {{ form.submit }}
+                                    </form>
                                     <hr>
                                     <div class="text-center">
                                         <a class="small" href="forgot-password.html">Forgot Password?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="register.html">Create an Account!</a>
+                                        <a class="small" href="{{url_for('register')}}">Create an Account!</a>
                                     </div>
                                 </div>
                             </div>
