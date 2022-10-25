@@ -3,8 +3,9 @@ from this import d
 import bcrypt
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
+from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user, user_accessed
 from flask_wtf import FlaskForm
+from importlib_metadata import method_cache
 from pyparsing import StringEnd
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired, Length, ValidationError
@@ -25,12 +26,21 @@ login_manager  = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
-class Rob_User(db.Model):
+
+@login_manager.user_loader
+def load_user(User_ID):
+    return Rob_User.query.get(int(User_ID))
+
+
+class Rob_User(db.Model, UserMixin):
     __table_args__ = {'schema' : 'rob'}
     __tablename__ = "Rob_User"
     User_ID = db.Column(db.INTEGER, primary_key = True, nullable = False)
     User_Acc = db.Column(db.VARCHAR(255), unique = True, nullable = False)
     User_Password = db.Column(db.VARCHAR(255))
+
+    def get_id(self):
+        return self.User_ID
 
 
 class RegisterForm(FlaskForm):
@@ -54,7 +64,10 @@ class LoginForm(FlaskForm):
     
     submit = SubmitField("Login")
 
-
+def set_password(pw):
+    pwhash = bcrypt.hashpw(pw.encode('utf8'), bcrypt.gensalt())
+    password_hash = pwhash.decode('utf8')
+    return password_hash
 
 @app.route('/')
 def select():
@@ -66,7 +79,21 @@ def select():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    if form.validate_on_submit():
+        user = Rob_User.query.filter_by(User_Acc = form.User_Acc.data).first()
+        if user:
+            if bcrypt.check_password_hash(user.User_Password, form.User_Password.data):
+                login_user(user)
+                return redirect(url_for('dashboard'))
     return render_template("login.html", form=form)
+
+
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -74,13 +101,18 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data)
-        new_user = Rob_User(Rob_Acc = form.username.data, User_Password = hashed_password)
+        hashed_password = bcrypt.generate_password_hash(form.User_Password.data).decode('utf8')
+        new_user = Rob_User(User_Acc = form.User_Acc.data, User_Password = hashed_password)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('login'))
 
     return render_template("register.html", form=form) 
+
+
+@app.route('/dashboard', methods=['GET', 'POST'])
+def dashboard():
+    return render_template('indexRob.html')
 
 
 @app.route("/hello")
