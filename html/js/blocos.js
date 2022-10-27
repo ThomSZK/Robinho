@@ -378,4 +378,17 @@ Blockly.Python['variavel'] = function (block) {
     return [code, Blockly.Python.ORDER_NONE];
 };
 
-Blockly.Variables.createVariableButtonHandler(button.getTargetWorkspace(), null, 'var');
+
+//Aumentar tamanho do workspace
+var onresize = function (e) {
+    var blocklyArea = document.getElementById('blocklyArea');
+    var blocklyDiv = document.getElementById('blocklyDiv');
+    var element = blocklyArea;
+    // Position blocklyDiv over blocklyArea.
+    blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
+    blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
+    Blockly.svgResize(demoWorkspace);
+};
+window.addEventListener('resize', onresize, false);
+onresize();
+Blockly.svgResize(workspace);
