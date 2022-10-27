@@ -83,7 +83,7 @@ def login():
         user = Rob_User.query.filter_by(User_Acc = form.User_Acc.data).first()
         if user:
             if bcrypt.check_password_hash(user.User_Password, form.User_Password.data):
-                login_user(user)
+                login_user(user, remember=True)
                 return redirect(url_for('dashboard'))
     return render_template("login.html", form=form)
 
@@ -106,13 +106,17 @@ def register():
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('login'))
+    
+    # else:
+        #do not add user to database
 
     return render_template("register.html", form=form) 
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
 def dashboard():
-    return render_template('indexRob.html')
+    return render_template('indexRob.html', user=current_user)
 
 
 @app.route("/hello")
