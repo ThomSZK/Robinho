@@ -1,6 +1,8 @@
+from crypt import methods
 from operator import length_hint
 from this import d
 import bcrypt
+from django.shortcuts import render
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user, user_accessed
@@ -69,6 +71,7 @@ def set_password(pw):
     password_hash = pwhash.decode('utf8')
     return password_hash
 
+
 @app.route('/')
 def select():
     solution = Rob_User.query.all()
@@ -94,6 +97,23 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
+
+@app.route('/tarefa_aluno', methods=['GET', 'POST'])
+@login_required
+def tarefa_aluno():
+    return render_template('tarefas-usuario-blocos.html')
+
+
+@app.route('/tarefa_professor', methods=['GET', 'POST'])
+@login_required
+def tarefa_professor():
+    return render_template('tarefas-professor-blocos.html')
+
+
+@app.route('/lista_espera', methods=['GET', 'POST'])
+@login_required
+def lista_espera():
+    return render_template('lista-de-espera.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
