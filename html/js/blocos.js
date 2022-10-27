@@ -188,83 +188,125 @@ Blockly.Blocks['variavel'] = {
 };
 
 var toolbox = {
-    "kind": "flyoutToolbox",
+    "kind": "categoryToolbox",
     "contents": [
         {
-            "kind": "block",
-            "type": "se_senao"
+            "kind": "category",
+            "name": "Logica",
+            "colour": "0",
+            "contents": [
+                {
+                    "kind": "block",
+                    "type": "se_senao"
+                },
+                {
+                    "kind": "block",
+                    "type": "logic_compare"
+                },
+                {
+                    "kind": "block",
+                    "type": "logic_operation"
+                },
+                {
+                    "kind": "block",
+                    "type": "logic_boolean"
+                },
+            ]
         },
         {
-            "kind": "block",
-            "type": "logic_compare"
+            "kind": "category",
+            "name": "Loop",
+            "colour": "45",
+            "contents": [
+                {
+                    "kind": "block",
+                    "type": "for_repetir"
+                },
+                {
+                    "kind": "block",
+                    "type": "while_enquanto"
+                },
+            ]
         },
         {
-            "kind": "block",
-            "type": "logic_operation"
+            "kind": "category",
+            "name": "Matematica",
+            "colour": "90",
+            "contents": [
+                {
+                    "kind": "block",
+                    "type": "math_number",
+                    "fields": {
+                        "NUM": 123
+                    }
+                },
+                {
+                    "kind": "block",
+                    "type": "math_arithmetic"
+                },
+            ]
         },
         {
-            "kind": "block",
-            "type": "logic_boolean"
+            "kind": "category",
+            "name": "Texto",
+            "colour": "135",
+            "contents": [
+                {
+                    "kind": "block",
+                    "type": "text"
+                },
+            ]
         },
         {
-            "kind": "block",
-            "type": "for_repetir"
+            "kind": "category",
+            "name": "Funcoes",
+            "colour": "180",
+            "contents": [
+                {
+                    "kind": "block",
+                    "type": "mover"
+                },
+                {
+                    "kind": "block",
+                    "type": "ler_distancia"
+                },
+                {
+                    "kind": "block",
+                    "type": "ler_cor"
+                },
+                {
+                    "kind": "block",
+                    "type": "acender_led"
+                },
+                {
+                    "kind": "block",
+                    "type": "camera_cor"
+                },
+                {
+                    "kind": "block",
+                    "type": "abrir_garra"
+                },
+                {
+                    "kind": "block",
+                    "type": "fechar_garra"
+                },
+            ]
         },
         {
-            "kind": "block",
-            "type": "while_enquanto"
+            "kind": "category",
+            "name": "Variaveis",
+            "colour": "225",
+            "contents": [
+                {
+                    "kind": "block",
+                    "type": "atribuicao_variavel"
+                },
+                {
+                    "kind": "block",
+                    "type": "variavel"
+                },
+            ]
         },
-        {
-            "kind": "block",
-            "type": "math_number",
-            "fields": {
-                "NUM": 123
-            }
-        },
-        {
-            "kind": "block",
-            "type": "math_arithmetic"
-        },
-        {
-            "kind": "block",
-            "type": "text"
-        },
-        {
-            "kind": "block",
-            "type": "mover"
-        },
-        {
-            "kind": "block",
-            "type": "ler_distancia"
-        },
-        {
-            "kind": "block",
-            "type": "ler_cor"
-        },
-        {
-            "kind": "block",
-            "type": "acender_led"
-        },
-        {
-            "kind": "block",
-            "type": "camera_cor"
-        },
-        {
-            "kind": "block",
-            "type": "abrir_garra"
-        },
-        {
-            "kind": "block",
-            "type": "fechar_garra"
-        },
-        {
-            "kind": "block",
-            "type": "atribuicao_variavel"
-        },
-        {
-            "kind": "block",
-            "type": "variavel"
-        }
     ]
 };
 
@@ -391,4 +433,4 @@ var onresize = function (e) {
 };
 window.addEventListener('resize', onresize, false);
 onresize();
-Blockly.svgResize(workspace);
+Blockly.svgResize(demoWorkspace);
