@@ -187,6 +187,17 @@ Blockly.Blocks['variavel'] = {
     }
 };
 
+Blockly.Blocks['cor'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldColour("#ffff33"), "NAME");
+        this.setOutput(true, null);
+        this.setColour(315);
+        this.setTooltip("");
+        this.setHelpUrl("");
+    }
+};
+
 var toolbox = {
     "kind": "categoryToolbox",
     "contents": [
@@ -235,6 +246,17 @@ var toolbox = {
             "contents": [
                 {
                     "kind": "block",
+                    "type": "math_arithmetic"
+                },
+            ]
+        },
+        {
+            "kind": "category",
+            "name": "Campos",
+            "colour": "135",
+            "contents": [
+                {
+                    "kind": "block",
                     "type": "math_number",
                     "fields": {
                         "NUM": 123
@@ -242,18 +264,11 @@ var toolbox = {
                 },
                 {
                     "kind": "block",
-                    "type": "math_arithmetic"
+                    "type": "text"
                 },
-            ]
-        },
-        {
-            "kind": "category",
-            "name": "Texto",
-            "colour": "135",
-            "contents": [
                 {
                     "kind": "block",
-                    "type": "text"
+                    "type": "cor"
                 },
             ]
         },
@@ -414,6 +429,14 @@ Blockly.Python['atribuicao_variavel'] = function (block) {
 
 Blockly.Python['variavel'] = function (block) {
     var variable_var = Blockly.Python.nameDB_.getName(block.getFieldValue('var'), Blockly.Variables.NAME_TYPE);
+    // TODO: Assemble Python into code variable.
+    var code = '...';
+    // TODO: Change ORDER_NONE to the correct strength.
+    return [code, Blockly.Python.ORDER_NONE];
+};
+
+Blockly.Python['cor'] = function (block) {
+    var colour_name = block.getFieldValue('NAME');
     // TODO: Assemble Python into code variable.
     var code = '...';
     // TODO: Change ORDER_NONE to the correct strength.
