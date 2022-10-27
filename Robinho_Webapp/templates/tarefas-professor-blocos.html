@@ -148,7 +148,7 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
                                 <img class="img-profile rounded-circle"
-                                     src="img/undraw_profile.svg">
+                                     src="{{url_for('static', filename='img/undraw_profile.svg')}}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -259,7 +259,7 @@
 
     <script src="https://unpkg.com/blockly/blockly.min.js"></script>
     <script src="https://unpkg.com/blockly/python_compressed"></script>
-    <script type='text/javascript' src='js/blocos.js'></script>
+    <script type='text/javascript' src="{{url_for('static', filename='js/blocos.js')}}"></script>
     <script src="https://unpkg.com/browse/blockly/blockly_compressed.js"></script>
     <script src="https://unpkg.com/browse/blockly/blocks_compressed.js"></script>
     <script src="https://unpkg.com/browse/blockly/msg/pt-br.js"></script>

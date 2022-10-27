@@ -97,13 +97,13 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-
+#ARRUMAR LINK -- tarefa usuario --> tarefa usuario blocos 
 @app.route('/tarefa_aluno', methods=['GET', 'POST'])
 @login_required
 def tarefa_aluno():
     return render_template('tarefas-usuario-blocos.html')
 
-
+#Arrumar link -- tarefa professor --> tarefa professor blocos
 @app.route('/tarefa_professor', methods=['GET', 'POST'])
 @login_required
 def tarefa_professor():
