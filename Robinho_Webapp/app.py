@@ -101,12 +101,22 @@ def logout():
 @app.route('/tarefa_aluno', methods=['GET', 'POST'])
 @login_required
 def tarefa_aluno():
+    return render_template('tarefas-usuario.html')
+
+@app.route('/tarefa_aluno_bloco', methods=['GET', 'POST'])
+@login_required
+def tarefa_aluno_bloco():
     return render_template('tarefas-usuario-blocos.html')
 
 #Arrumar link -- tarefa professor --> tarefa professor blocos
 @app.route('/tarefa_professor', methods=['GET', 'POST'])
 @login_required
 def tarefa_professor():
+    return render_template('tarefas-professor.html')
+
+@app.route('/tarefa_professor_bloco', methods=['GET', 'POST'])
+@login_required
+def tarefa_professor_bloco():
     return render_template('tarefas-professor-blocos.html')
 
 
