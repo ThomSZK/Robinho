@@ -195,10 +195,29 @@
                         </a>
                     </div>
 
-                    <div class="card shadow mb-4">
-                        <div class="card-body">
-                            <div id="blocklyArea" style="height:600px;width:1200px;">
-                                <div id="blocklyDiv" style="position: absolute"></div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Blocos</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div id="blocklyArea" style="height:600px;">
+                                        <div id="blocklyDiv" style="position: absolute"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Código</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div style="min-height:600px;">
+                                        <pre><code id="blocklyCode"></code></pre>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

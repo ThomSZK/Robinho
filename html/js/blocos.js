@@ -252,7 +252,7 @@ var toolbox = {
         },
         {
             "kind": "category",
-            "name": "Campos",
+            "name": "Valores",
             "colour": "135",
             "contents": [
                 {
@@ -280,6 +280,10 @@ var toolbox = {
                 {
                     "kind": "block",
                     "type": "mover"
+                },
+                {
+                    "kind": "block",
+                    "type": "virar"
                 },
                 {
                     "kind": "block",
@@ -331,57 +335,61 @@ var demoWorkspace = Blockly.inject('blocklyDiv',
         toolbox: toolbox
     });
 
+demoWorkspace.addChangeListener(showCode);
+
 Blockly.Python['mover'] = function (block) {
     var dropdown_direcao = block.getFieldValue('direcao');
     var number_quantidade = block.getFieldValue('quantidade');
-    // TODO: Assemble Python into code variable.
-    var code = '...\n';
+    
+    var code = 'mover(\'' + dropdown_direcao + '\', ' + number_quantidade +')\n';
     return code;
 };
 
 Blockly.Python['for_repetir'] = function (block) {
     var number_i = block.getFieldValue('i');
     var statements_name = Blockly.Python.statementToCode(block, 'NAME');
-    // TODO: Assemble Python into code variable.
-    var code = '...\n';
+    
+    var code = 'for i in range(' + number_i + '):\n' +
+               statements_name + '\n';
     return code;
 };
 
 Blockly.Python['while_enquanto'] = function (block) {
     var value_a = Blockly.Python.valueToCode(block, 'a', Blockly.Python.ORDER_ATOMIC);
     var dropdown_tipo = block.getFieldValue('tipo');
+    if (dropdown_tipo == '=')
+        dropdown_tipo = '==';
     var value_b = Blockly.Python.valueToCode(block, 'b', Blockly.Python.ORDER_ATOMIC);
     var statements_name = Blockly.Python.statementToCode(block, 'NAME');
-    // TODO: Assemble Python into code variable.
-    var code = '...\n';
+    
+    var code = 'while ' + value_a + ' ' + dropdown_tipo + ' ' + value_b + ':\n' +
+               statements_name + '\n';
     return code;
 };
 
 Blockly.Python['ler_distancia'] = function (block) {
-    // TODO: Assemble Python into code variable.
-    var code = '...';
-    // TODO: Change ORDER_NONE to the correct strength.
-    return [code, Blockly.Python.ORDER_NONE];
+    var code = 'ler_distancia()'
+    
+    return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
 Blockly.Python['ler_cor'] = function (block) {
-    // TODO: Assemble Python into code variable.
-    var code = '...';
-    // TODO: Change ORDER_NONE to the correct strength.
-    return [code, Blockly.Python.ORDER_NONE];
+    var code = 'ler_cor()';
+    
+    return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
 Blockly.Python['acender_led'] = function (block) {
     var colour_cor = block.getFieldValue('cor');
-    // TODO: Assemble Python into code variable.
-    var code = '...\n';
+    
+    var code = 'acender_led(\'' + colour_cor + '\')\n';
     return code;
 };
 
 Blockly.Python['virar'] = function (block) {
     var angle_angulo = block.getFieldValue('angulo');
-    // TODO: Assemble Python into code variable.
-    var code = '...\n';
+    
+    var code = 'virar(' + angle_angulo + ')\n';
     return code;
 };
 
@@ -389,58 +397,49 @@ Blockly.Python['se_senao'] = function (block) {
     var value_se = Blockly.Python.valueToCode(block, 'se', Blockly.Python.ORDER_ATOMIC);
     var statements_faca = Blockly.Python.statementToCode(block, 'faca');
     var statements_faca_senao = Blockly.Python.statementToCode(block, 'faca_senao');
-    // TODO: Assemble Python into code variable.
-    var code = '...\n';
+    
+    var code = 'if ' + value_se + ':\n' +
+        statements_faca +
+        'else:\n' +
+        statements_faca_senao + '\n';
     return code;
 };
 
 Blockly.Python['camera_cor'] = function (block) {
-    // TODO: Assemble Python into code variable.
-    var code = '...';
-    // TODO: Change ORDER_NONE to the correct strength.
-    return [code, Blockly.Python.ORDER_NONE];
+    var code = 'ler_cor_camera()';
+    return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
 Blockly.Python['abrir_garra'] = function (block) {
-    // TODO: Assemble Python into code variable.
-    var code = '...\n';
+    var code = 'abrir_garra()\n';
     return code;
 };
 
-Blockly.Blocks['fechar_garra'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField("fechar garra");
-        this.setPreviousStatement(true, null);
-        this.setNextStatement(true, null);
-        this.setColour(0);
-        this.setTooltip("");
-        this.setHelpUrl("");
-    }
+Blockly.Python['fechar_garra'] = function (block) {
+    var code = 'fechar_garra()\n';
+    return code;
 };
 
 Blockly.Python['atribuicao_variavel'] = function (block) {
     var variable_var = Blockly.Python.nameDB_.getName(block.getFieldValue('var'), Blockly.Variables.NAME_TYPE);
     var value_valor = Blockly.Python.valueToCode(block, 'valor', Blockly.Python.ORDER_ATOMIC);
-    // TODO: Assemble Python into code variable.
-    var code = '...\n';
+    
+    var code = variable_var + ' = ' + value_valor + '\n';
     return code;
 };
 
 Blockly.Python['variavel'] = function (block) {
     var variable_var = Blockly.Python.nameDB_.getName(block.getFieldValue('var'), Blockly.Variables.NAME_TYPE);
-    // TODO: Assemble Python into code variable.
-    var code = '...';
-    // TODO: Change ORDER_NONE to the correct strength.
-    return [code, Blockly.Python.ORDER_NONE];
+
+    var code = variable_var;
+    return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
 Blockly.Python['cor'] = function (block) {
     var colour_name = block.getFieldValue('NAME');
-    // TODO: Assemble Python into code variable.
-    var code = '...';
-    // TODO: Change ORDER_NONE to the correct strength.
-    return [code, Blockly.Python.ORDER_NONE];
+
+    var code = '\'' + colour_name + '\'';
+    return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
 
@@ -457,3 +456,9 @@ var onresize = function (e) {
 window.addEventListener('resize', onresize, false);
 onresize();
 Blockly.svgResize(demoWorkspace);
+
+function showCode() {
+    Blockly.Python.INFINITE_LOOP_TRAP = null;
+    var code = Blockly.Python.workspaceToCode(demoWorkspace);
+    $('#blocklyCode')[0].innerHTML = code;
+}
