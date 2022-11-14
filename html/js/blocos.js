@@ -4,7 +4,7 @@ Blockly.Blocks['mover'] = {
             .appendField("MOVER");
         this.appendDummyInput()
             .appendField("Direcao")
-            .appendField(new Blockly.FieldDropdown([["Norte", "N"], ["Sul", "S"], ["Leste", "L"], ["Oeste", "O"]]), "direcao");
+            .appendField(new Blockly.FieldDropdown([["Frente", "F"], ["Tras", "T"]]), "direcao");
         this.appendDummyInput()
             .appendField("Quantidade")
             .appendField(new Blockly.FieldNumber(1, 1, 15), "quantidade");
@@ -56,17 +56,6 @@ Blockly.Blocks['while_enquanto'] = {
     }
 };
 
-Blockly.Blocks['ler_distancia'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField("ler distancia");
-        this.setOutput(true, "Number");
-        this.setColour(60);
-        this.setTooltip("");
-        this.setHelpUrl("");
-    }
-};
-
 Blockly.Blocks['ler_cor'] = {
     init: function () {
         this.appendDummyInput()
@@ -80,9 +69,13 @@ Blockly.Blocks['ler_cor'] = {
 
 Blockly.Blocks['acender_led'] = {
     init: function () {
+        var field = new Blockly.FieldColour('#ffff00');
+        field.setColours(
+            ['#00ff00', '#ffff00', '#ff0000', '#ff00ff', '#0000ff', '#00ffff', '#ffffff'],
+            ['verde', 'amarelo', 'vermelho', 'rosa', 'azul', 'ciano', 'branco']);
         this.appendDummyInput()
             .appendField("acender led")
-            .appendField(new Blockly.FieldColour("#ffff33"), "cor");
+            .appendField(field, "cor");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(345);
@@ -95,7 +88,7 @@ Blockly.Blocks['virar'] = {
     init: function () {
         this.appendDummyInput()
             .appendField("virar")
-            .appendField(new Blockly.FieldAngle(90), "angulo");
+            .appendField(new Blockly.FieldDropdown([["direita", "D"], ["esquerda", "E"]]), "direcao");
         this.setPreviousStatement(true, null);
         this.setNextStatement(true, null);
         this.setColour(105);
@@ -189,8 +182,12 @@ Blockly.Blocks['variavel'] = {
 
 Blockly.Blocks['cor'] = {
     init: function () {
+        var field = new Blockly.FieldColour('#ffff00');
+        field.setColours(
+            ['#00ff00', '#ffff00', '#ff0000', '#ff00ff', '#0000ff', '#00ffff', '#ffffff'],
+            ['verde', 'amarelo', 'vermelho', 'rosa', 'azul', 'ciano', 'branco']);
         this.appendDummyInput()
-            .appendField(new Blockly.FieldColour("#ffff33"), "NAME");
+            .appendField(field, "NAME");
         this.setOutput(true, null);
         this.setColour(315);
         this.setTooltip("");
@@ -287,10 +284,6 @@ var toolbox = {
                 },
                 {
                     "kind": "block",
-                    "type": "ler_distancia"
-                },
-                {
-                    "kind": "block",
                     "type": "ler_cor"
                 },
                 {
@@ -340,8 +333,16 @@ demoWorkspace.addChangeListener(showCode);
 Blockly.Python['mover'] = function (block) {
     var dropdown_direcao = block.getFieldValue('direcao');
     var number_quantidade = block.getFieldValue('quantidade');
-    
-    var code = 'mover(\'' + dropdown_direcao + '\', ' + number_quantidade +')\n';
+
+    var cod_dir = null;
+    if (dropdown_direcao == 'F')
+        cod_dir = '00';
+    else if (dropdown_direcao == 'T')
+        cod_dir = '01';
+
+    code = 'for i in range (' + number_quantidade + '):\n' +
+           '  robinho_func.arduino_cmd(0b000111' + cod_dir + ', uart)\n';
+
     return code;
 };
 
@@ -367,29 +368,44 @@ Blockly.Python['while_enquanto'] = function (block) {
     return code;
 };
 
-Blockly.Python['ler_distancia'] = function (block) {
-    var code = 'ler_distancia()'
-    
-    return [code, Blockly.Python.ORDER_ATOMIC];
-};
-
 Blockly.Python['ler_cor'] = function (block) {
-    var code = 'ler_cor()';
+    var code = 'robinho_func.read_floor_color(uart)';
     
     return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
 Blockly.Python['acender_led'] = function (block) {
     var colour_cor = block.getFieldValue('cor');
+
+    var r = colour_cor.substring(1, 3);
+    var g = colour_cor.substring(3, 5);
+    var b = colour_cor.substring(5, 7);
+
+    var digito_r = 0, digito_g = 0, digito_b = 0;
+
+    if (r == 'ff')
+        digito_r = 1;
+    if (g == 'ff')
+        digito_g = 1;
+    if (b == 'ff')
+        digito_b = 1;
+
+    var code = 'robinho_func.arduino_cmd(0b' + digito_r.toString() + digito_g.toString() + digito_b.toString() + '11000, uart)\n';
     
-    var code = 'acender_led(\'' + colour_cor + '\')\n';
     return code;
 };
 
 Blockly.Python['virar'] = function (block) {
-    var angle_angulo = block.getFieldValue('angulo');
+    var dropdown_direcao = block.getFieldValue('direcao');
+
+    var cod_dir = null;
+    if (dropdown_direcao == 'D')
+        cod_dir = '10';
+    else if (dropdown_direcao == 'E')
+        cod_dir = '11';
+
+    var code = 'robinho_func.arduino_cmd(0b000111' + cod_dir + ', uart)\n';
     
-    var code = 'virar(' + angle_angulo + ')\n';
     return code;
 };
 
@@ -406,22 +422,22 @@ Blockly.Python['se_senao'] = function (block) {
 };
 
 Blockly.Python['camera_cor'] = function (block) {
-    var code = 'ler_cor_camera()';
+    var code = 'robinho_func.read_camera_color(uart);\n';
     return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
 Blockly.Python['abrir_garra'] = function (block) {
-    var code = 'abrir_garra()\n';
+    var code = 'robinho_func.arduino_cmd(0b00011010, uart);\n';
     return code;
 };
 
 Blockly.Python['fechar_garra'] = function (block) {
-    var code = 'fechar_garra()\n';
+    var code = 'robinho_func.arduino_cmd(0b00011011, uart);\n';
     return code;
 };
 
 Blockly.Python['atribuicao_variavel'] = function (block) {
-    var variable_var = Blockly.Python.nameDB_.getName(block.getFieldValue('var'), Blockly.Variables.NAME_TYPE);
+    var variable_var = Blockly.Python.nameDB_.getName(block.getFieldValue('var'), Blockly.Names.NameType.VARIABLE);
     var value_valor = Blockly.Python.valueToCode(block, 'valor', Blockly.Python.ORDER_ATOMIC);
     
     var code = variable_var + ' = ' + value_valor + '\n';
@@ -429,7 +445,7 @@ Blockly.Python['atribuicao_variavel'] = function (block) {
 };
 
 Blockly.Python['variavel'] = function (block) {
-    var variable_var = Blockly.Python.nameDB_.getName(block.getFieldValue('var'), Blockly.Variables.NAME_TYPE);
+    var variable_var = Blockly.Python.nameDB_.getName(block.getFieldValue('var'), Blockly.Names.NameType.VARIABLE);
 
     var code = variable_var;
     return [code, Blockly.Python.ORDER_ATOMIC];
@@ -461,4 +477,23 @@ function showCode() {
     Blockly.Python.INFINITE_LOOP_TRAP = null;
     var code = Blockly.Python.workspaceToCode(demoWorkspace);
     $('#blocklyCode')[0].innerHTML = code;
+}
+
+function gerarArquivo() {
+    var codigo = 'import machine\n' +
+        'import socket\n' +
+        'import time\n' +
+        'from machine import Pin\n' +
+        'from machine import UART\n' +
+        'import camera\n' +
+        'import robinho_func\n\n' +
+        'flash = Pin(4, Pin.OUT)\n' +
+        'uart = machine.UART(1, 9600, rx = 12, tx = 13, txbuf = 10, rxbuf = 10)\n' +
+        'uart.init(9600, bits = 8, parity = None, stop = 1) \n\n' +
+        $('#blocklyCode')[0].innerHTML;
+    
+    var userInput = codigo;
+
+    var blob = new Blob([userInput], { type: "text/plain" });
+    saveAs(blob, "main.py");
 }
