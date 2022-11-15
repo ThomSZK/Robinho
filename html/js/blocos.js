@@ -341,7 +341,7 @@ Blockly.Python['mover'] = function (block) {
         cod_dir = '01';
 
     code = 'for i in range (' + number_quantidade + '):\n' +
-           '  robinho_func.arduino_cmd(0b000111' + cod_dir + ', uart)\n';
+        '  robinho_func.arduino_cmd(0b000111' + cod_dir + ', uart, client_socket)\n';
 
     return code;
 };
@@ -369,7 +369,7 @@ Blockly.Python['while_enquanto'] = function (block) {
 };
 
 Blockly.Python['ler_cor'] = function (block) {
-    var code = 'robinho_func.read_floor_color(uart)';
+    var code = 'robinho_func.read_floor_color(uart, client_socket)';
     
     return [code, Blockly.Python.ORDER_ATOMIC];
 };
@@ -390,7 +390,7 @@ Blockly.Python['acender_led'] = function (block) {
     if (b == 'ff')
         digito_b = 1;
 
-    var code = 'robinho_func.arduino_cmd(0b' + digito_r.toString() + digito_g.toString() + digito_b.toString() + '11000, uart)\n';
+    var code = 'robinho_func.arduino_cmd(0b' + digito_r.toString() + digito_g.toString() + digito_b.toString() + '11000, uart, client_socket)\n';
     
     return code;
 };
@@ -404,7 +404,7 @@ Blockly.Python['virar'] = function (block) {
     else if (dropdown_direcao == 'E')
         cod_dir = '11';
 
-    var code = 'robinho_func.arduino_cmd(0b000111' + cod_dir + ', uart)\n';
+    var code = 'robinho_func.arduino_cmd(0b000111' + cod_dir + ', uart, client_socket)\n';
     
     return code;
 };
@@ -422,17 +422,17 @@ Blockly.Python['se_senao'] = function (block) {
 };
 
 Blockly.Python['camera_cor'] = function (block) {
-    var code = 'robinho_func.read_camera_color(uart);\n';
+    var code = 'robinho_func.read_camera_color(uart, client_socket);\n';
     return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
 Blockly.Python['abrir_garra'] = function (block) {
-    var code = 'robinho_func.arduino_cmd(0b00011010, uart);\n';
+    var code = 'robinho_func.arduino_cmd(0b00011010, uart, client_socket);\n';
     return code;
 };
 
 Blockly.Python['fechar_garra'] = function (block) {
-    var code = 'robinho_func.arduino_cmd(0b00011011, uart);\n';
+    var code = 'robinho_func.arduino_cmd(0b00011011, uart, client_socket);\n';
     return code;
 };
 
@@ -483,14 +483,20 @@ function gerarArquivo() {
     var codigo = 'import machine\n' +
         'import socket\n' +
         'import time\n' +
-        'from machine import Pin\n' +
-        'from machine import UART\n' +
         'import camera\n' +
-        'import robinho_func\n\n' +
+        'import robinho_func\n' +
+        'from machine import Pin\n' +
+        'from machine import UART\n\n' +
         'flash = Pin(4, Pin.OUT)\n' +
-        'uart = machine.UART(1, 9600, rx = 12, tx = 13, txbuf = 10, rxbuf = 10)\n' +
-        'uart.init(9600, bits = 8, parity = None, stop = 1) \n\n' +
-        $('#blocklyCode')[0].innerHTML;
+        'uart = machine.UART(1, 9600, rx=12, tx=13)\n' +
+        'uart.init(9600, bits=8, parity=None, stop=1)\n' +
+        'uart.read()\n\n' +
+        'client_socket = socket.socket()\n' +
+        'client_socket.connect(("10.0.0.102", 93))\n' +
+        'client_socket.settimeout(0.1)\n' +
+        'robinho_func.blink(0.2, flash)\n\n' +
+        $('#blocklyCode')[0].innerHTML + '\n' +
+        'client_socket.close()\n';
     
     var userInput = codigo;
 
