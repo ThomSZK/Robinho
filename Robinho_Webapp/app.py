@@ -228,6 +228,12 @@ uart = machine.UART(1, 9600, rx=12, tx=13)
 uart.init(9600, bits=8, parity=None, stop=1)
 uart.read()
 
+robinho_func.blink(0.1, flash)
+host = "192.168.100.253"  # as both code is running on same pc
+port = 5070  # socket server port number
+client_socket = socket.socket()  # instantiate
+client_socket.connect((host, port))  # connect to the server
+robinho_func.blink(0.1, flash)
 
 """
 
