@@ -136,7 +136,9 @@
                         <script>
                             function robinho_send(){
                                 $.ajax({
-                                    url:"/sendmain"
+                                    type: "POST",
+                                    url:"/sendmain",
+                                    data: $("#blocklyCode")[0].innerText
                                 })
                             }
                         </script>
