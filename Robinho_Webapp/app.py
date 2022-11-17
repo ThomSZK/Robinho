@@ -216,15 +216,7 @@ def greet():
 @app.route("/sendmain")
 def sendmain():
     robinho_send(_op, _host, _port, _passwd, _src_file, _dst_file)
-
-
-
-if __name__ == '__main__':
-    app.run(debug=True, host='192.168.100.253')
-
-
-
-
+    return "Executando"
 
 
 
@@ -479,6 +471,7 @@ def robinho_send(op, host, port, passwd, src_file, dst_file):
     addr = ai[0][4]
 
     s.connect(addr)
+
     #s = s.makefile("rwb")
     client_handshake(s)
 
@@ -499,22 +492,35 @@ def robinho_send(op, host, port, passwd, src_file, dst_file):
     # ws.write only sends binary data, so we need to instead send the
     # appropriate header for "text" data to send control characters
     text_hdr = struct.pack(">BB", 0x81, 1)
-    s.send(text_hdr)
-    s.send(b'\x03')  #ctrl-c to interrupt whatever might be happening
-    print(s.recv(1000))
-    s.send(text_hdr)
-    s.send(b'\x04')  #ctrl-d
+    print("texthdr", text_hdr)
+    s.sendall(text_hdr)
+    print("sent1")
+    s.sendall(b'\x03')  #ctrl-c to interrupt whatever might be happening
+    #print("recv", s.recv(1000))
+    s.sendall(text_hdr)
+    print("sent2")
+    s.sendall(b'\x04')  #ctrl-d
+    print("sent3")
 
     s.close()
 
 
 _op = "put"
-_host = "192.168.101.3"
+_host = "192.168.100.240"
 _port = 8266
 _passwd = "robinho"
-_src_file = "esp32/micropy/main.py"
+_src_file = "tmain.py"
 _dst_file = "main.py"
 # robinho_send(_op, _host, _port, _passwd, _src_file, _dst_file)
+
+
+
+
+if __name__ == '__main__':
+    app.run(debug=True, host='192.168.100.253')
+
+
+
 
 
 
