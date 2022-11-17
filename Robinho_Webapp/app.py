@@ -255,6 +255,18 @@ def sendmain():
 
     return "Executando"
 
+# TO BE DONE 
+@app.route("/stop", methods = ['POST'])
+def stopping():
+    print(request.get_data())
+
+    with open("/tmp/esp_code_tmp.py", mode="wb") as f:
+        f.write(prepend + request.get_data() + postpend)
+
+    robinho_stop(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
+
+    return "Executando"
+
 
 
 
@@ -539,6 +551,49 @@ def robinho_send(op, host, port, passwd, src_file, dst_file):
     s.sendall(b'\x04')  #ctrl-d
     print("sent3")
 
+    s.close()
+
+
+# TO BE DONE 
+def robinho_stop(op, host, port, passwd, src_file, dst_file):
+    
+    print("op:%s, host:%s, port:%d, passwd:%s." % (op, host, port, passwd))
+    print(src_file, "->", dst_file)
+
+    s = socket.socket()
+
+    ai = socket.getaddrinfo(host, port)
+    addr = ai[0][4]
+
+    s.connect(addr)
+
+    #s = s.makefile("rwb")
+    client_handshake(s)
+
+    ws = websocket(s)
+
+    login(ws, passwd)
+    print("Remote WebREPL version:", get_ver(ws))
+
+    # Set websocket to send data marked as "binary"
+    ws.ioctl(9, 2)
+
+    if op == "get":
+        get_file(ws, dst_file, src_file)
+    elif op == "put":
+        put_file(ws, src_file, dst_file)
+
+    print('Stopping...')
+    # ws.write only sends binary data, so we need to instead send the
+    # appropriate header for "text" data to send control characters
+    text_hdr = struct.pack(">BB", 0x81, 1)
+    print("texthdr", text_hdr)
+    s.sendall(text_hdr)
+    print("sent1")
+    s.sendall(b'\x03')  #ctrl-c to interrupt whatever might be happening
+    #print("recv", s.recv(1000))
+    s.sendall(text_hdr)
+    print("sent2")
     s.close()
 
 
