@@ -131,7 +131,15 @@
                         <a href="#" class="btn btn-info btn-lg" onclick="javascript: gerarArquivo();">
                             <i class="fas fa-save"></i>
                         </a>
-                        <a href="#" class="btn btn-success btn-lg" onclick="robinho_send(_op, _host, _port, _passwd, _src_file, _dst_file)">
+                        <a href="#" class="btn btn-success btn-lg" onclick="robinho_send()">
+                        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+                        <script>
+                            function robinho_send(){
+                                $.ajax({
+                                    url:"/sendmain"
+                                })
+                            }
+                        </script>
                             <i class="fas fa-play"></i>
                         </a>
                     </div>

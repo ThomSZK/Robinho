@@ -32,7 +32,7 @@ except ImportError:
 app = Flask(__name__)
 app.secret_key = 'supersecrete_key123'
 
-password = "Thom_SZK_127789*"
+# password = "Thom_SZK_127789*"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:robinho@localhost:5432/robinho' #?options=-c%20search_path=schema_name
 db = SQLAlchemy(app)
 
@@ -142,7 +142,7 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-#ARRUMAR LINK -- tarefa usuario --> tarefa usuario blocos 
+
 @app.route('/tarefa_aluno', methods=['GET', 'POST'])
 @login_required
 def tarefa_aluno():
@@ -153,7 +153,7 @@ def tarefa_aluno():
 def tarefa_aluno_bloco():
     return render_template('tarefas-usuario-blocos.html')
 
-#Arrumar link -- tarefa professor --> tarefa professor blocos
+
 @app.route('/tarefa_professor', methods=['GET', 'POST'])
 @login_required
 def tarefa_professor():
@@ -211,6 +211,11 @@ def index():
 def greet(): 
     flash("Hi " + str(request.form['name_input']) + ", great to see you!")
     return render_template("index.html")
+
+
+@app.route("/sendmain")
+def sendmain():
+    robinho_send(_op, _host, _port, _passwd, _src_file, _dst_file)
 
 
 
