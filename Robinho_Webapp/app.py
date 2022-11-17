@@ -213,9 +213,40 @@ def greet():
     return render_template("index.html")
 
 
-@app.route("/sendmain")
+prepend = b"""
+
+import machine
+import socket
+import time
+import camera
+import robinho_func
+from machine import Pin
+from machine import UART
+
+flash = Pin(4, Pin.OUT)
+uart = machine.UART(1, 9600, rx=12, tx=13)
+uart.init(9600, bits=8, parity=None, stop=1)
+uart.read()
+
+
+"""
+
+postpend = b"""
+
+
+client_socket.close()
+
+"""
+
+@app.route("/sendmain", methods = ['POST'])
 def sendmain():
-    robinho_send(_op, _host, _port, _passwd, _src_file, _dst_file)
+    print(request.get_data())
+
+    with open("/tmp/esp_code_tmp.py", mode="wb") as f:
+        f.write(prepend + request.get_data() + postpend)
+
+    robinho_send(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
+
     return "Executando"
 
 
@@ -509,7 +540,7 @@ _op = "put"
 _host = "192.168.100.240"
 _port = 8266
 _passwd = "robinho"
-_src_file = "tmain.py"
+_src_file = "temp.py"
 _dst_file = "main.py"
 # robinho_send(_op, _host, _port, _passwd, _src_file, _dst_file)
 
