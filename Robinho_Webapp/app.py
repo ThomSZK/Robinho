@@ -94,11 +94,11 @@ class Rob_User(db.Model, UserMixin):
 
 
 class RegisterForm(FlaskForm):
-    User_Acc = StringField(validators=[InputRequired(), Length(min=2, max=255)], render_kw={"placeholder" : "Username"})
+    User_Acc = StringField(validators=[InputRequired(), Length(min=2, max=255)], render_kw={"placeholder" : "Usuario", "class": "form-control form-control-user"})
     
-    User_Password = PasswordField(validators=[InputRequired(), Length(min=4, max=255)], render_kw={"placeholder" : "Password"})
+    User_Password = PasswordField(validators=[InputRequired(), Length(min=4, max=255)], render_kw={"placeholder" : "Senha", "class": "form-control form-control-user"})
     
-    submit = SubmitField("Register")
+    submit = SubmitField("Criar conta", render_kw={"class": "btn btn-primary btn-user btn-block"})
 
     def validate_username(self, User_Acc):
         existing_user_username = Rob_User.query.filter_by(User_Acc = User_Acc.data).first()
@@ -108,11 +108,11 @@ class RegisterForm(FlaskForm):
             
 
 class LoginForm(FlaskForm):
-    User_Acc = StringField(validators=[InputRequired(), Length(min=2, max=255)], render_kw={"placeholder" : "Username"})
+    User_Acc = StringField(validators=[InputRequired(), Length(min=2, max=255)], render_kw={"placeholder" : "Usuario", "class": "form-control form-control-user"})
     
-    User_Password = PasswordField(validators=[InputRequired(), Length(min=4, max=255)], render_kw={"placeholder" : "Password"})
+    User_Password = PasswordField(validators=[InputRequired(), Length(min=4, max=255)], render_kw={"placeholder" : "Senha", "class": "form-control form-control-user"})
     
-    submit = SubmitField("Login")
+    submit = SubmitField("Entrar", render_kw={"class": "btn btn-primary btn-user btn-block"})
 
 def set_password(pw):
     pwhash = bcrypt.hashpw(pw.encode('utf8'), bcrypt.gensalt())
