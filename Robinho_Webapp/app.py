@@ -61,6 +61,21 @@ def genFrames():
             yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
+def genPov():
+    frames=0
+    while True:
+        #success, frame = camera.read()  # read the camera frame
+        #if not success:
+            #break
+        #else:
+        frames+=1
+        frame = cv2.imread('./images/pov.png')
+        time.sleep(0.5)
+        if frame is not None:
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -152,6 +167,10 @@ def tarefa_professor_bloco():
 @app.route('/video_feed')
 def video_feed():
     return Response(genFrames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/pov_feed')
+def pov_feed():
+    return Response(genPov(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/lista_espera', methods=['GET', 'POST'])
 @login_required
