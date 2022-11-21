@@ -263,7 +263,7 @@ robinho_func.blink(1.0, flash)
 
 @app.route("/sendmain", methods = ['POST'])
 def sendmain():
-    print(request.get_data())
+    print("Request send blockly:" + repr(request.get_data()))
 
     with open("/tmp/esp_code_tmp.py", mode="wb") as f:
         f.write(prepend + request.get_data() + postpend)
