@@ -244,8 +244,12 @@ robinho_func.blink(1.0, flash)
 host = "192.168.101.2"  # as both code is running on same pc
 port = 5070  # socket server port number
 client_socket = socket.socket()  # instantiate
-client_socket.connect((host, port))  # connect to the server
-
+while True:
+  try:
+    client_socket.connect((host, port))  # connect to the server
+    break
+  except OSError:
+    robinho_func.blink(2.0, flash)
 robinho_func.blink(0.1, flash)
 
 """
