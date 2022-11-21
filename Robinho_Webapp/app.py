@@ -12,6 +12,7 @@ from pyparsing import StringEnd
 from wtforms import StringField, PasswordField, SubmitField, RadioField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
+# from werkzeug import secure_filename
 #from RobinhoImageProcessing import main as img
 #from RobinhoImageProcessing.utils import detector, superimpose as si
 import cv2
@@ -94,6 +95,7 @@ class Rob_User(db.Model, UserMixin):
         return self.user_id
 
 
+
 class RegisterForm(FlaskForm):
     User_Acc = StringField(validators=[InputRequired(), Length(min=2, max=255)], render_kw={"placeholder" : "Usuario", "class": "form-control form-control-user"})
     
@@ -135,19 +137,20 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.user_password, form.User_Password.data):
                 login_user(user, remember=True)
+                # print(user.user_id)
                 return redirect(url_for('dashboard'))
     return render_template("login.html", form=form)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
-@login_required
+@login_required 
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
 
 @app.route('/tarefa_aluno', methods=['GET', 'POST'])
-@login_required
+@login_required 
 def tarefa_aluno():
     return render_template('tarefas-usuario.html')
 
@@ -160,6 +163,10 @@ def tarefa_aluno_bloco():
 @app.route('/tarefa_professor', methods=['GET', 'POST'])
 @login_required
 def tarefa_professor():
+    # if(current_user.user_id == 6):
+    #     return render_template('tarefas-professor.html')
+    # else:
+    #     return render_template('indexRob.html')
     return render_template('tarefas-professor.html')
 
 @app.route('/tarefa_professor_bloco', methods=['GET', 'POST'])
@@ -274,6 +281,13 @@ def stopping():
     robinho_stop(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
 
     return "Executando"
+
+
+@app.route("/savecode", methods=['POST'])
+def savecode():
+    f = request.files['file']
+    f.save(secure_filename(f.filename))
+    return 'Code saved succesfully'
 
 
 
