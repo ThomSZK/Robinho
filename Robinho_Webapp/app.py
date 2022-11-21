@@ -272,6 +272,18 @@ def sendmain():
 
     return "Executando"
 
+@app.route("/savemain", methods = ['POST'])
+def savemain():
+    print("Request save blockly:" + repr(request.get_data()))
+
+    with open("/tmp/esp_code_tmp.py", mode="wb") as f:
+        f.write(prepend + request.get_data() + postpend)
+
+
+    robinho_send(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
+
+    return "Executando"    
+
 # TO BE DONE 
 @app.route("/stop", methods = ['POST'])
 def stopping():
@@ -500,41 +512,7 @@ Sec-WebSocket-Key: foo\r
 
 
 def robinho_send(op, host, port, passwd, src_file, dst_file):
-    # if len(sys.argv) not in (3, 5):
-    #     help(1)
-
-    # passwd = None
-    # for i in range(len(sys.argv)):
-    #     if sys.argv[i] == '-p':
-    #         sys.argv.pop(i)
-    #         passwd = sys.argv.pop(i)
-    #         break
-
-    # if not passwd:
-    #     import getpass
-    #     passwd = getpass.getpass()
-
-    # if ":" in sys.argv[1] and ":" in sys.argv[2]:
-    #     error("Operations on 2 remote files are not supported")
-    # if ":" not in sys.argv[1] and ":" not in sys.argv[2]:
-    #     error("One remote file is required")
-
-    # if ":" in sys.argv[1]:
-    #     op = "get"
-    #     host, port, src_file = parse_remote(sys.argv[1])
-    #     dst_file = sys.argv[2]
-    #     if os.path.isdir(dst_file):
-    #         basename = src_file.rsplit("/", 1)[-1]
-    #         dst_file += "/" + basename
-    # else:
-    #     op = "put"
-    #     host, port, dst_file = parse_remote(sys.argv[2])
-    #     src_file = sys.argv[1]
-    #     if dst_file[-1] == "/":
-    #         basename = src_file.rsplit("/", 1)[-1]
-    #         dst_file += basename
-
-    
+ 
     print("op:%s, host:%s, port:%d, passwd:%s." % (op, host, port, passwd))
     print(src_file, "->", dst_file)
 
@@ -633,10 +611,4 @@ _dst_file = "main.py"
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
-
-
-
-
-
-
+    app.run(debug=True, host='0.0.0.0', port=5000, ssl_context='adhoc')
