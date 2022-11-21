@@ -52,16 +52,11 @@
             <hr class="sidebar-divider">
 
             <!-- Nav Item - Tarefas -->
-            <li class="nav-item">
+            {% if user.user_type == 1 %}
+            <li class="nav-item" title="{{user.user_type}}" ">
                 <a class="nav-link" href="{{url_for('tarefa_professor')}}">
                     <i class="fas fa-fw fa-tasks"></i>
                     <span>Tarefas</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{url_for('tarefa_aluno')}}">
-                    <i class="fas fa-fw fa-tasks"></i>
-                    <span>Tarefas Aluno</span>
                 </a>
             </li>
 
@@ -72,6 +67,15 @@
                     <span>Lista de espera</span>
                 </a>
             </li>
+
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('tarefa_aluno')}}">
+                    <i class="fas fa-fw fa-tasks"></i>
+                    <span>Tarefas Aluno</span>
+                </a>
+            </li>
+            {% endif %}
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -134,8 +138,8 @@
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <h3 class="mb-2 text-gray-800">Live Streaming</h3>
                     <div class="col-lg-8  offset-lg-2">
-                        <h3 class="mt-5">Live Streaming</h3>
                         <img src="{{ url_for('video_feed') }}" width="100%" mimetype='multipart/x-mixed-replace'>
                     </div>
                 </div>
@@ -192,13 +196,6 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{url_for('static', filename='js/sb-admin-2.min.js')}}"></script>
-
-    <!-- Page level plugins -->
-    <script src="{{url_for('static', filename='js/Chart.min.js')}}"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="{{url_for('static', filename='js/demo/chart-area-demo.js')}}"></script>
-    <script src="{{url_for('static', filename='js/demo/chart-pie-demo.js')}}"></script>
 
 </body>
 

@@ -9,7 +9,7 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from flask_wtf import FlaskForm
 from importlib_metadata import method_cache
 from pyparsing import StringEnd
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, RadioField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
 #from RobinhoImageProcessing import main as img
@@ -62,6 +62,7 @@ class Rob_User(db.Model, UserMixin):
     user_id = db.Column(db.INTEGER, primary_key = True, nullable = False)
     user_acc = db.Column(db.VARCHAR(255), unique = True, nullable = False)
     user_password = db.Column(db.VARCHAR(255))
+    user_type = db.Column(db.INTEGER)
 
     def get_id(self):
         return self.user_id
@@ -71,6 +72,8 @@ class RegisterForm(FlaskForm):
     User_Acc = StringField(validators=[InputRequired(), Length(min=2, max=255)], render_kw={"placeholder" : "Usuario", "class": "form-control form-control-user"})
     
     User_Password = PasswordField(validators=[InputRequired(), Length(min=4, max=255)], render_kw={"placeholder" : "Senha", "class": "form-control form-control-user"})
+
+    User_Type = RadioField(choices=[('1','Professor'),('2','Aluno')], default='2', render_kw={"class": "radio-list"});
     
     submit = SubmitField("Criar conta", render_kw={"class": "btn btn-primary btn-user btn-block"})
 
@@ -154,7 +157,7 @@ def register():
 
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.User_Password.data).decode('utf8')
-        new_user = Rob_User(user_acc = form.User_Acc.data, user_password = hashed_password)
+        new_user = Rob_User(user_acc = form.User_Acc.data, user_password = hashed_password, user_type = form.User_Type.data)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('login'))
