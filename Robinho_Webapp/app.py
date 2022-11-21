@@ -9,10 +9,9 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, log
 from flask_wtf import FlaskForm
 from importlib_metadata import method_cache
 from pyparsing import StringEnd
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, RadioField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
-# from werkzeug import secure_filename
 #from RobinhoImageProcessing import main as img
 #from RobinhoImageProcessing.utils import detector, superimpose as si
 import cv2
@@ -89,18 +88,18 @@ class Rob_User(db.Model, UserMixin):
     user_id = db.Column(db.INTEGER, primary_key = True, nullable = False)
     user_acc = db.Column(db.VARCHAR(255), unique = True, nullable = False)
     user_password = db.Column(db.VARCHAR(255))
-    # user_role = db.Column(db.INTEGER, nullable = False)
+    user_type = db.Column(db.INTEGER)
 
     def get_id(self):
         return self.user_id
-
-
 
 
 class RegisterForm(FlaskForm):
     User_Acc = StringField(validators=[InputRequired(), Length(min=2, max=255)], render_kw={"placeholder" : "Usuario", "class": "form-control form-control-user"})
     
     User_Password = PasswordField(validators=[InputRequired(), Length(min=4, max=255)], render_kw={"placeholder" : "Senha", "class": "form-control form-control-user"})
+
+    User_Type = RadioField(choices=[('1','Professor'),('2','Aluno')], default='2', render_kw={"class": "radio-list"});
     
     submit = SubmitField("Criar conta", render_kw={"class": "btn btn-primary btn-user btn-block"})
 
@@ -136,20 +135,19 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.user_password, form.User_Password.data):
                 login_user(user, remember=True)
-                # print(user.user_id)
                 return redirect(url_for('dashboard'))
     return render_template("login.html", form=form)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
-@login_required 
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
 
 @app.route('/tarefa_aluno', methods=['GET', 'POST'])
-@login_required 
+@login_required
 def tarefa_aluno():
     return render_template('tarefas-usuario.html')
 
@@ -162,10 +160,6 @@ def tarefa_aluno_bloco():
 @app.route('/tarefa_professor', methods=['GET', 'POST'])
 @login_required
 def tarefa_professor():
-    # if(current_user.user_id == 6):
-    #     return render_template('tarefas-professor.html')
-    # else:
-    #     return render_template('indexRob.html')
     return render_template('tarefas-professor.html')
 
 @app.route('/tarefa_professor_bloco', methods=['GET', 'POST'])
@@ -193,7 +187,7 @@ def register():
 
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.User_Password.data).decode('utf8')
-        new_user = Rob_User(user_acc = form.User_Acc.data, user_password = hashed_password)
+        new_user = Rob_User(user_acc = form.User_Acc.data, user_password = hashed_password, user_type = form.User_Type.data)
         db.session.add(new_user)
         db.session.commit()
         return redirect(url_for('login'))
@@ -280,13 +274,6 @@ def stopping():
     robinho_stop(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
 
     return "Executando"
-
-
-@app.route("/savecode", methods=['POST'])
-def savecode():
-    f = request.files['file']
-    f.save(secure_filename(f.filename))
-    return 'Code saved succesfully'
 
 
 

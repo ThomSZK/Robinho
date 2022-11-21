@@ -1,0 +1,10 @@
+.radio-list {
+    display: inline-flex;
+    list-style-type: none;
+    padding-right: 20px;
+    padding-inline-start: 10px;
+}
+
+.radio-list > li {
+    padding-right: 20px;
+}

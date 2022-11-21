@@ -3,3 +3,6 @@ CREATE TABLE Rob_User (
 	User_Acc VARCHAR(255) NOT NULL,
 	User_Password VARCHAR(255) NOT NULL
 );
+
+ALTER TABLE Rob_User 
+ADD User_Type INTEGER;
