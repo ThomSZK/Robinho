@@ -241,7 +241,7 @@ uart.init(9600, bits=8, parity=None, stop=1)
 uart.read()
 
 robinho_func.blink(1.0, flash)
-host = "192.168.100.69"  # as both code is running on same pc
+host = "192.168.101.2"  # as both code is running on same pc
 port = 5070  # socket server port number
 client_socket = socket.socket()  # instantiate
 client_socket.connect((host, port))  # connect to the server
@@ -618,7 +618,7 @@ def robinho_stop(op, host, port, passwd, src_file, dst_file):
 
 
 _op = "put"
-_host = "192.168.100.68"
+_host = "192.168.101.3"
 _port = 8266
 _passwd = "robinho"
 _src_file = "temp.py"
