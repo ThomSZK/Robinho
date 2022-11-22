@@ -53,7 +53,7 @@
 
             <!-- Nav Item - Tarefas -->
             <li class="nav-item active">
-                <a class="nav-link" href="{{url_for('tarefa_aluno_bloco')}}">
+                <a class="nav-link" href="{{url_for('tarefa_aluno')}}">
                     <i class="fas fa-fw fa-tasks"></i>
                     <span>Tarefas</span>
                 </a>
@@ -90,7 +90,7 @@
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
                                 <img class="img-profile rounded-circle"
-                                     src="img/undraw_profile.svg">
+                                     src="{{url_for('static', filename='img/undraw_profile.svg')}}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -132,23 +132,15 @@
                         <!-- Card Header - Accordion -->
                         <a href="#collapseTarefa1" class="d-block card-header py-3" data-toggle="collapse"
                            role="button" aria-expanded="true" aria-controls="collapseTarefa1">
-                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 1</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 1 - Piscar LED</h6>
                         </a>
                         <!-- Card Content - Collapse -->
                         <div class="collapse show" id="collapseTarefa1">
                             <div class="card-body">
-                                <p>
-                                    Fusce in luctus lorem. Donec vitae eros urna. Nunc hendrerit erat vitae lectus ornare, ac tincidunt libero malesuada. Etiam lobortis aliquet nibh, eget vehicula sapien aliquet ut. Donec vestibulum pretium sagittis. Proin ornare auctor eros eget sagittis. Morbi nec libero enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-                                </p>
-                                <p>
-                                    In finibus lectus vel erat tempus blandit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eu diam viverra, malesuada urna vitae, pellentesque eros. In tortor tortor, sodales a dolor non, convallis feugiat lectus. Suspendisse interdum nibh leo, sagittis consequat neque malesuada non. Donec pellentesque tellus nec arcu blandit blandit. Quisque mollis urna vel eros feugiat, sed feugiat nunc pellentesque. Donec feugiat augue velit, ut bibendum mi mattis eu. Phasellus semper aliquet augue eget venenatis.
-                                </p>
-                                <p>
-                                    Nulla vestibulum arcu eget ante malesuada, at semper orci aliquet. Ut et massa nisl. Sed laoreet augue a commodo consectetur. Nam tellus erat, malesuada at arcu vel, fermentum hendrerit dui. Aliquam erat volutpat. Nunc lacinia convallis arcu. Pellentesque ultrices ex vitae nisl imperdiet vulputate. Aliquam mollis turpis neque, aliquam sollicitudin turpis pellentesque ac. Nulla dui erat, rhoncus vulputate fringilla sed, maximus et lacus. Nam maximus metus vitae diam malesuada, quis malesuada libero blandit. Aenean sit amet mollis leo, nec euismod ante. Vestibulum gravida tortor in lacinia placerat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                                </p>
+                                <p>Os LEDs do robô deverão ser acesos em qualquer cor.</p>
                                 <div class="row">
                                     <div class="col-md-12 text-center">
-                                        <a href="{{url_for('tarefa_aluno_bloco')}}" class="btn btn-primary btn-icon-split" style="margin-bottom:10px;">
+                                        <a href="{{url_for('tarefa_aluno_bloco') + '?id=1'}}" class="btn btn-primary btn-icon-split" style="margin-bottom:10px;">
                                             <span class="icon text-white-50">
                                                 <i class="fas fa-pen"></i>
                                             </span>
@@ -162,66 +154,74 @@
 
                     <div class="card shadow mb-4">
                         <!-- Card Header - Accordion -->
-                        <a href="#collapseTarefa2" class="d-block card-header py-3" data-toggle="collapse"
+                        <a href="#collapseTarefa2" class="d-block card-header py-3 collapsed" data-toggle="collapse"
                            role="button" aria-expanded="true" aria-controls="collapseTarefa2">
-                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 2</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 2 - Movimento do robô</h6>
                         </a>
                         <!-- Card Content - Collapse -->
-                        <div class="collapse show" id="collapseTarefa2">
+                        <div class="collapse" id="collapseTarefa2">
                             <div class="card-body">
-                                <p>
-                                    Fusce in luctus lorem. Donec vitae eros urna. Nunc hendrerit erat vitae lectus ornare, ac tincidunt libero malesuada. Etiam lobortis aliquet nibh, eget vehicula sapien aliquet ut. Donec vestibulum pretium sagittis. Proin ornare auctor eros eget sagittis. Morbi nec libero enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-                                </p>
-                                <p>
-                                    In finibus lectus vel erat tempus blandit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eu diam viverra, malesuada urna vitae, pellentesque eros. In tortor tortor, sodales a dolor non, convallis feugiat lectus. Suspendisse interdum nibh leo, sagittis consequat neque malesuada non. Donec pellentesque tellus nec arcu blandit blandit. Quisque mollis urna vel eros feugiat, sed feugiat nunc pellentesque. Donec feugiat augue velit, ut bibendum mi mattis eu. Phasellus semper aliquet augue eget venenatis.
-                                </p>
-                                <p>
-                                    Nulla vestibulum arcu eget ante malesuada, at semper orci aliquet. Ut et massa nisl. Sed laoreet augue a commodo consectetur. Nam tellus erat, malesuada at arcu vel, fermentum hendrerit dui. Aliquam erat volutpat. Nunc lacinia convallis arcu. Pellentesque ultrices ex vitae nisl imperdiet vulputate. Aliquam mollis turpis neque, aliquam sollicitudin turpis pellentesque ac. Nulla dui erat, rhoncus vulputate fringilla sed, maximus et lacus. Nam maximus metus vitae diam malesuada, quis malesuada libero blandit. Aenean sit amet mollis leo, nec euismod ante. Vestibulum gravida tortor in lacinia placerat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                                </p>
+                                <p>O robô deverá realizar movimentos de tal maneira que seja formado um quadrado. Ao fim da tarefa, o robô deverá estar na posição inicial.</p>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <a href="{{url_for('tarefa_aluno_bloco') + '?id=2'}}" class="btn btn-primary btn-icon-split" style="margin-bottom:10px;">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                            <span class="text">Abrir tarefa</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="card shadow mb-4">
                         <!-- Card Header - Accordion -->
-                        <a href="#collapseTarefa3" class="d-block card-header py-3" data-toggle="collapse"
+                        <a href="#collapseTarefa3" class="d-block card-header py-3 collapsed" data-toggle="collapse"
                            role="button" aria-expanded="true" aria-controls="collapseTarefa3">
-                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 3</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 3 - Percorrer trajeto</h6>
                         </a>
                         <!-- Card Content - Collapse -->
-                        <div class="collapse show" id="collapseTarefa3">
+                        <div class="collapse" id="collapseTarefa3">
                             <div class="card-body">
-                                <p>
-                                    Fusce in luctus lorem. Donec vitae eros urna. Nunc hendrerit erat vitae lectus ornare, ac tincidunt libero malesuada. Etiam lobortis aliquet nibh, eget vehicula sapien aliquet ut. Donec vestibulum pretium sagittis. Proin ornare auctor eros eget sagittis. Morbi nec libero enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-                                </p>
-                                <p>
-                                    In finibus lectus vel erat tempus blandit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eu diam viverra, malesuada urna vitae, pellentesque eros. In tortor tortor, sodales a dolor non, convallis feugiat lectus. Suspendisse interdum nibh leo, sagittis consequat neque malesuada non. Donec pellentesque tellus nec arcu blandit blandit. Quisque mollis urna vel eros feugiat, sed feugiat nunc pellentesque. Donec feugiat augue velit, ut bibendum mi mattis eu. Phasellus semper aliquet augue eget venenatis.
-                                </p>
-                                <p>
-                                    Nulla vestibulum arcu eget ante malesuada, at semper orci aliquet. Ut et massa nisl. Sed laoreet augue a commodo consectetur. Nam tellus erat, malesuada at arcu vel, fermentum hendrerit dui. Aliquam erat volutpat. Nunc lacinia convallis arcu. Pellentesque ultrices ex vitae nisl imperdiet vulputate. Aliquam mollis turpis neque, aliquam sollicitudin turpis pellentesque ac. Nulla dui erat, rhoncus vulputate fringilla sed, maximus et lacus. Nam maximus metus vitae diam malesuada, quis malesuada libero blandit. Aenean sit amet mollis leo, nec euismod ante. Vestibulum gravida tortor in lacinia placerat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                                </p>
+                                <p>O robô deverá ir até a posição inicial do trajeto, e então percorrer ele até o destino final. O trajeto pode ser definido de qualquer forma, contando que respeite as posições abaixo.</p>
+                                <p>Posição inicial: (10, 4)</p>
+                                <p>Posição final: (5, 1)</p>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <a href="{{url_for('tarefa_aluno_bloco') + '?id=3'}}" class="btn btn-primary btn-icon-split" style="margin-bottom:10px;">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                            <span class="text">Abrir tarefa</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="card shadow mb-4">
                         <!-- Card Header - Accordion -->
-                        <a href="#collapseTarefa4" class="d-block card-header py-3" data-toggle="collapse"
+                        <a href="#collapseTarefa4" class="d-block card-header py-3 collapsed" data-toggle="collapse"
                            role="button" aria-expanded="true" aria-controls="collapseTarefa4">
-                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 4</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 4 - Ler sensor de cor</h6>
                         </a>
                         <!-- Card Content - Collapse -->
-                        <div class="collapse show" id="collapseTarefa4">
+                        <div class="collapse" id="collapseTarefa4">
                             <div class="card-body">
-                                <p>
-                                    Fusce in luctus lorem. Donec vitae eros urna. Nunc hendrerit erat vitae lectus ornare, ac tincidunt libero malesuada. Etiam lobortis aliquet nibh, eget vehicula sapien aliquet ut. Donec vestibulum pretium sagittis. Proin ornare auctor eros eget sagittis. Morbi nec libero enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-                                </p>
-                                <p>
-                                    In finibus lectus vel erat tempus blandit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eu diam viverra, malesuada urna vitae, pellentesque eros. In tortor tortor, sodales a dolor non, convallis feugiat lectus. Suspendisse interdum nibh leo, sagittis consequat neque malesuada non. Donec pellentesque tellus nec arcu blandit blandit. Quisque mollis urna vel eros feugiat, sed feugiat nunc pellentesque. Donec feugiat augue velit, ut bibendum mi mattis eu. Phasellus semper aliquet augue eget venenatis.
-                                </p>
-                                <p>
-                                    Nulla vestibulum arcu eget ante malesuada, at semper orci aliquet. Ut et massa nisl. Sed laoreet augue a commodo consectetur. Nam tellus erat, malesuada at arcu vel, fermentum hendrerit dui. Aliquam erat volutpat. Nunc lacinia convallis arcu. Pellentesque ultrices ex vitae nisl imperdiet vulputate. Aliquam mollis turpis neque, aliquam sollicitudin turpis pellentesque ac. Nulla dui erat, rhoncus vulputate fringilla sed, maximus et lacus. Nam maximus metus vitae diam malesuada, quis malesuada libero blandit. Aenean sit amet mollis leo, nec euismod ante. Vestibulum gravida tortor in lacinia placerat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                                </p>
+                                <p>O robô deverá identificar a cor do chão através do sensor de cor.</p>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <a href="{{url_for('tarefa_aluno_bloco') + '?id=4'}}" class="btn btn-primary btn-icon-split" style="margin-bottom:10px;">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                            <span class="text">Abrir tarefa</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -230,66 +230,72 @@
 
                     <div class="card shadow mb-4">
                         <!-- Card Header - Accordion -->
-                        <a href="#collapseTarefa1Intermediario" class="d-block card-header py-3" data-toggle="collapse"
+                        <a href="#collapseTarefa1Intermediario" class="d-block card-header py-3 collapsed" data-toggle="collapse"
                            role="button" aria-expanded="true" aria-controls="collapseTarefa1Intermediario">
-                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 1</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 1 - Identificar cor</h6>
                         </a>
                         <!-- Card Content - Collapse -->
-                        <div class="collapse show" id="collapseTarefa1Intermediario">
+                        <div class="collapse" id="collapseTarefa1Intermediario">
                             <div class="card-body">
-                                <p>
-                                    Fusce in luctus lorem. Donec vitae eros urna. Nunc hendrerit erat vitae lectus ornare, ac tincidunt libero malesuada. Etiam lobortis aliquet nibh, eget vehicula sapien aliquet ut. Donec vestibulum pretium sagittis. Proin ornare auctor eros eget sagittis. Morbi nec libero enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-                                </p>
-                                <p>
-                                    In finibus lectus vel erat tempus blandit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eu diam viverra, malesuada urna vitae, pellentesque eros. In tortor tortor, sodales a dolor non, convallis feugiat lectus. Suspendisse interdum nibh leo, sagittis consequat neque malesuada non. Donec pellentesque tellus nec arcu blandit blandit. Quisque mollis urna vel eros feugiat, sed feugiat nunc pellentesque. Donec feugiat augue velit, ut bibendum mi mattis eu. Phasellus semper aliquet augue eget venenatis.
-                                </p>
-                                <p>
-                                    Nulla vestibulum arcu eget ante malesuada, at semper orci aliquet. Ut et massa nisl. Sed laoreet augue a commodo consectetur. Nam tellus erat, malesuada at arcu vel, fermentum hendrerit dui. Aliquam erat volutpat. Nunc lacinia convallis arcu. Pellentesque ultrices ex vitae nisl imperdiet vulputate. Aliquam mollis turpis neque, aliquam sollicitudin turpis pellentesque ac. Nulla dui erat, rhoncus vulputate fringilla sed, maximus et lacus. Nam maximus metus vitae diam malesuada, quis malesuada libero blandit. Aenean sit amet mollis leo, nec euismod ante. Vestibulum gravida tortor in lacinia placerat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                                </p>
+                                <p>O robô deverá encontrar o quadrado vermelho no chão e piscar os LEDs na mesma cor.</p>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <a href="{{url_for('tarefa_aluno_bloco') + '?id=5'}}" class="btn btn-primary btn-icon-split" style="margin-bottom:10px;">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                            <span class="text">Abrir tarefa</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="card shadow mb-4">
                         <!-- Card Header - Accordion -->
-                        <a href="#collapseTarefa2Intermediario" class="d-block card-header py-3" data-toggle="collapse"
+                        <a href="#collapseTarefa2Intermediario" class="d-block card-header py-3 collapsed" data-toggle="collapse"
                            role="button" aria-expanded="true" aria-controls="collapseTarefa2Intermediario">
-                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 2</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 2 - Botões</h6>
                         </a>
                         <!-- Card Content - Collapse -->
-                        <div class="collapse show" id="collapseTarefa2Intermediario">
+                        <div class="collapse" id="collapseTarefa2Intermediario">
                             <div class="card-body">
-                                <p>
-                                    Fusce in luctus lorem. Donec vitae eros urna. Nunc hendrerit erat vitae lectus ornare, ac tincidunt libero malesuada. Etiam lobortis aliquet nibh, eget vehicula sapien aliquet ut. Donec vestibulum pretium sagittis. Proin ornare auctor eros eget sagittis. Morbi nec libero enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-                                </p>
-                                <p>
-                                    In finibus lectus vel erat tempus blandit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eu diam viverra, malesuada urna vitae, pellentesque eros. In tortor tortor, sodales a dolor non, convallis feugiat lectus. Suspendisse interdum nibh leo, sagittis consequat neque malesuada non. Donec pellentesque tellus nec arcu blandit blandit. Quisque mollis urna vel eros feugiat, sed feugiat nunc pellentesque. Donec feugiat augue velit, ut bibendum mi mattis eu. Phasellus semper aliquet augue eget venenatis.
-                                </p>
-                                <p>
-                                    Nulla vestibulum arcu eget ante malesuada, at semper orci aliquet. Ut et massa nisl. Sed laoreet augue a commodo consectetur. Nam tellus erat, malesuada at arcu vel, fermentum hendrerit dui. Aliquam erat volutpat. Nunc lacinia convallis arcu. Pellentesque ultrices ex vitae nisl imperdiet vulputate. Aliquam mollis turpis neque, aliquam sollicitudin turpis pellentesque ac. Nulla dui erat, rhoncus vulputate fringilla sed, maximus et lacus. Nam maximus metus vitae diam malesuada, quis malesuada libero blandit. Aenean sit amet mollis leo, nec euismod ante. Vestibulum gravida tortor in lacinia placerat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                                </p>
+                                <p>O robô deverá pressionar os botões da arena na seguinte sequência: 3-2-4-1</p>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <a href="{{url_for('tarefa_aluno_bloco') + '?id=6'}}" class="btn btn-primary btn-icon-split" style="margin-bottom:10px;">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                            <span class="text">Abrir tarefa</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="card shadow mb-4">
                         <!-- Card Header - Accordion -->
-                        <a href="#collapseTarefa3Intermediario" class="d-block card-header py-3" data-toggle="collapse"
+                        <a href="#collapseTarefa3Intermediario" class="d-block card-header py-3 collapsed" data-toggle="collapse"
                            role="button" aria-expanded="true" aria-controls="collapseTarefa3Intermediario">
-                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 3</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 3 - Encontrar a caixa</h6>
                         </a>
                         <!-- Card Content - Collapse -->
-                        <div class="collapse show" id="collapseTarefa3Intermediario">
+                        <div class="collapse" id="collapseTarefa3Intermediario">
                             <div class="card-body">
-                                <p>
-                                    Fusce in luctus lorem. Donec vitae eros urna. Nunc hendrerit erat vitae lectus ornare, ac tincidunt libero malesuada. Etiam lobortis aliquet nibh, eget vehicula sapien aliquet ut. Donec vestibulum pretium sagittis. Proin ornare auctor eros eget sagittis. Morbi nec libero enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-                                </p>
-                                <p>
-                                    In finibus lectus vel erat tempus blandit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eu diam viverra, malesuada urna vitae, pellentesque eros. In tortor tortor, sodales a dolor non, convallis feugiat lectus. Suspendisse interdum nibh leo, sagittis consequat neque malesuada non. Donec pellentesque tellus nec arcu blandit blandit. Quisque mollis urna vel eros feugiat, sed feugiat nunc pellentesque. Donec feugiat augue velit, ut bibendum mi mattis eu. Phasellus semper aliquet augue eget venenatis.
-                                </p>
-                                <p>
-                                    Nulla vestibulum arcu eget ante malesuada, at semper orci aliquet. Ut et massa nisl. Sed laoreet augue a commodo consectetur. Nam tellus erat, malesuada at arcu vel, fermentum hendrerit dui. Aliquam erat volutpat. Nunc lacinia convallis arcu. Pellentesque ultrices ex vitae nisl imperdiet vulputate. Aliquam mollis turpis neque, aliquam sollicitudin turpis pellentesque ac. Nulla dui erat, rhoncus vulputate fringilla sed, maximus et lacus. Nam maximus metus vitae diam malesuada, quis malesuada libero blandit. Aenean sit amet mollis leo, nec euismod ante. Vestibulum gravida tortor in lacinia placerat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                                </p>
+                                <p>O robô deverá encontrar e pegar a caixa azul.</p>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <a href="{{url_for('tarefa_aluno_bloco') + '?id=7'}}" class="btn btn-primary btn-icon-split" style="margin-bottom:10px;">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                            <span class="text">Abrir tarefa</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -298,66 +304,72 @@
 
                     <div class="card shadow mb-4">
                         <!-- Card Header - Accordion -->
-                        <a href="#collapseTarefa1Avancado" class="d-block card-header py-3" data-toggle="collapse"
+                        <a href="#collapseTarefa1Avancado" class="d-block card-header py-3 collapsed" data-toggle="collapse"
                            role="button" aria-expanded="true" aria-controls="collapseTarefa1Avancado">
-                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 1</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 1 - Labirinto</h6>
                         </a>
                         <!-- Card Content - Collapse -->
-                        <div class="collapse show" id="collapseTarefa1Avancado">
+                        <div class="collapse" id="collapseTarefa1Avancado">
                             <div class="card-body">
-                                <p>
-                                    Fusce in luctus lorem. Donec vitae eros urna. Nunc hendrerit erat vitae lectus ornare, ac tincidunt libero malesuada. Etiam lobortis aliquet nibh, eget vehicula sapien aliquet ut. Donec vestibulum pretium sagittis. Proin ornare auctor eros eget sagittis. Morbi nec libero enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-                                </p>
-                                <p>
-                                    In finibus lectus vel erat tempus blandit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eu diam viverra, malesuada urna vitae, pellentesque eros. In tortor tortor, sodales a dolor non, convallis feugiat lectus. Suspendisse interdum nibh leo, sagittis consequat neque malesuada non. Donec pellentesque tellus nec arcu blandit blandit. Quisque mollis urna vel eros feugiat, sed feugiat nunc pellentesque. Donec feugiat augue velit, ut bibendum mi mattis eu. Phasellus semper aliquet augue eget venenatis.
-                                </p>
-                                <p>
-                                    Nulla vestibulum arcu eget ante malesuada, at semper orci aliquet. Ut et massa nisl. Sed laoreet augue a commodo consectetur. Nam tellus erat, malesuada at arcu vel, fermentum hendrerit dui. Aliquam erat volutpat. Nunc lacinia convallis arcu. Pellentesque ultrices ex vitae nisl imperdiet vulputate. Aliquam mollis turpis neque, aliquam sollicitudin turpis pellentesque ac. Nulla dui erat, rhoncus vulputate fringilla sed, maximus et lacus. Nam maximus metus vitae diam malesuada, quis malesuada libero blandit. Aenean sit amet mollis leo, nec euismod ante. Vestibulum gravida tortor in lacinia placerat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                                </p>
+                                <p>O robô deverá entrar no labirinto com o objetivo de encontrar a região com paredes verdes. Assim que encontrar, ele deverá piscar os LEDs na mesma cor.</p>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <a href="{{url_for('tarefa_aluno_bloco') + '?id=8'}}" class="btn btn-primary btn-icon-split" style="margin-bottom:10px;">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                            <span class="text">Abrir tarefa</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="card shadow mb-4">
                         <!-- Card Header - Accordion -->
-                        <a href="#collapseTarefa2Avancado" class="d-block card-header py-3" data-toggle="collapse"
+                        <a href="#collapseTarefa2Avancado" class="d-block card-header py-3 collapsed" data-toggle="collapse"
                            role="button" aria-expanded="true" aria-controls="collapseTarefa2Avancado">
-                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 2</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 2 - Levar a caixa no lugar</h6>
                         </a>
                         <!-- Card Content - Collapse -->
-                        <div class="collapse show" id="collapseTarefa2Avancado">
+                        <div class="collapse" id="collapseTarefa2Avancado">
                             <div class="card-body">
-                                <p>
-                                    Fusce in luctus lorem. Donec vitae eros urna. Nunc hendrerit erat vitae lectus ornare, ac tincidunt libero malesuada. Etiam lobortis aliquet nibh, eget vehicula sapien aliquet ut. Donec vestibulum pretium sagittis. Proin ornare auctor eros eget sagittis. Morbi nec libero enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-                                </p>
-                                <p>
-                                    In finibus lectus vel erat tempus blandit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eu diam viverra, malesuada urna vitae, pellentesque eros. In tortor tortor, sodales a dolor non, convallis feugiat lectus. Suspendisse interdum nibh leo, sagittis consequat neque malesuada non. Donec pellentesque tellus nec arcu blandit blandit. Quisque mollis urna vel eros feugiat, sed feugiat nunc pellentesque. Donec feugiat augue velit, ut bibendum mi mattis eu. Phasellus semper aliquet augue eget venenatis.
-                                </p>
-                                <p>
-                                    Nulla vestibulum arcu eget ante malesuada, at semper orci aliquet. Ut et massa nisl. Sed laoreet augue a commodo consectetur. Nam tellus erat, malesuada at arcu vel, fermentum hendrerit dui. Aliquam erat volutpat. Nunc lacinia convallis arcu. Pellentesque ultrices ex vitae nisl imperdiet vulputate. Aliquam mollis turpis neque, aliquam sollicitudin turpis pellentesque ac. Nulla dui erat, rhoncus vulputate fringilla sed, maximus et lacus. Nam maximus metus vitae diam malesuada, quis malesuada libero blandit. Aenean sit amet mollis leo, nec euismod ante. Vestibulum gravida tortor in lacinia placerat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                                </p>
+                                <p>O robô deverá encontrar o bloco da cor amarela, piscar os LEDs indicando a cor encontrada e levar o bloco até a posição de mesma cor.</p>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <a href="{{url_for('tarefa_aluno_bloco') + '?id=9'}}" class="btn btn-primary btn-icon-split" style="margin-bottom:10px;">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                            <span class="text">Abrir tarefa</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="card shadow mb-4">
                         <!-- Card Header - Accordion -->
-                        <a href="#collapseTarefa3Avancado" class="d-block card-header py-3" data-toggle="collapse"
+                        <a href="#collapseTarefa3Avancado" class="d-block card-header py-3 collapsed" data-toggle="collapse"
                            role="button" aria-expanded="true" aria-controls="collapseTarefa3Avancado">
-                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 3</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Tarefa 3 - Genius</h6>
                         </a>
                         <!-- Card Content - Collapse -->
-                        <div class="collapse show" id="collapseTarefa3Avancado">
+                        <div class="collapse" id="collapseTarefa3Avancado">
                             <div class="card-body">
-                                <p>
-                                    Fusce in luctus lorem. Donec vitae eros urna. Nunc hendrerit erat vitae lectus ornare, ac tincidunt libero malesuada. Etiam lobortis aliquet nibh, eget vehicula sapien aliquet ut. Donec vestibulum pretium sagittis. Proin ornare auctor eros eget sagittis. Morbi nec libero enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
-                                </p>
-                                <p>
-                                    In finibus lectus vel erat tempus blandit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec eu diam viverra, malesuada urna vitae, pellentesque eros. In tortor tortor, sodales a dolor non, convallis feugiat lectus. Suspendisse interdum nibh leo, sagittis consequat neque malesuada non. Donec pellentesque tellus nec arcu blandit blandit. Quisque mollis urna vel eros feugiat, sed feugiat nunc pellentesque. Donec feugiat augue velit, ut bibendum mi mattis eu. Phasellus semper aliquet augue eget venenatis.
-                                </p>
-                                <p>
-                                    Nulla vestibulum arcu eget ante malesuada, at semper orci aliquet. Ut et massa nisl. Sed laoreet augue a commodo consectetur. Nam tellus erat, malesuada at arcu vel, fermentum hendrerit dui. Aliquam erat volutpat. Nunc lacinia convallis arcu. Pellentesque ultrices ex vitae nisl imperdiet vulputate. Aliquam mollis turpis neque, aliquam sollicitudin turpis pellentesque ac. Nulla dui erat, rhoncus vulputate fringilla sed, maximus et lacus. Nam maximus metus vitae diam malesuada, quis malesuada libero blandit. Aenean sit amet mollis leo, nec euismod ante. Vestibulum gravida tortor in lacinia placerat. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-                                </p>
+                                <p>O robô deverá observar a sequência de cor mostrada pelo LED da arena e, então, apertar os botões correspondentes na mesma sequência.</p>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <a href="{{url_for('tarefa_aluno_bloco') + '?id=10'}}" class="btn btn-primary btn-icon-split" style="margin-bottom:10px;">
+                                            <span class="icon text-white-50">
+                                                <i class="fas fa-pen"></i>
+                                            </span>
+                                            <span class="text">Abrir tarefa</span>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,5 @@
 from crypt import methods
+from email.policy import default
 from operator import length_hint
 from this import d
 import bcrypt
@@ -94,6 +95,26 @@ class Rob_User(db.Model, UserMixin):
         return self.user_id
 
 
+class Rob_Tasks(db.Model, UserMixin):
+    __table_args__ = {'schema' : 'public'}
+    __tablename__ = "rob_tasks"
+    task_id = db.Column(db.INTEGER, primary_key = True, nullable = False)
+    task_name = db.Column(db.VARCHAR(255), nullable = False)
+    task_level = db.Column(db.INTEGER, nullable = False)
+    task_order = db.Column(db.INTEGER, nullable = False)
+
+
+class Rob_Review_Tasks(db.Model, UserMixin):
+    __table_args__ = {'schema' : 'public'}
+    __tablename__ = "rob_review_tasks"
+    task_id = db.Column(db.INTEGER, primary_key = True, nullable = False)
+    user_id = db.Column(db.INTEGER, primary_key = True, nullable = False)
+    task_grade = db.Column(db.INTEGER)
+    task_reviewed = db.Column(db.BOOLEAN, nullable = False, default = False)
+    task_reviewer = db.Column(db.INTEGER)
+    task_time = db.Column(db.INTEGER)
+
+
 class RegisterForm(FlaskForm):
     User_Acc = StringField(validators=[InputRequired(), Length(min=2, max=255)], render_kw={"placeholder" : "Usuario", "class": "form-control form-control-user"})
     
@@ -154,7 +175,14 @@ def tarefa_aluno():
 @app.route('/tarefa_aluno_bloco', methods=['GET', 'POST'])
 @login_required
 def tarefa_aluno_bloco():
-    return render_template('tarefas-usuario-blocos.html')
+    task_id = request.args.get('id')
+    task = Rob_Tasks.query.get(int(task_id))
+    user_task = Rob_Review_Tasks.query.filter_by(task_id = task_id, user_id = current_user.get_id()).first()
+    if not user_task:
+        user_task = Rob_Review_Tasks(task_id = task_id, task_name = task.task_name, user_id = current_user.get_id())
+        db.session.add(user_task)
+        db.session.commit()
+    return render_template('tarefas-usuario-blocos.html', task=task)
 
 
 @app.route('/tarefa_professor', methods=['GET', 'POST'])
