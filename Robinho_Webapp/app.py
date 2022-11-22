@@ -181,7 +181,7 @@ def tarefa_aluno_bloco():
     task = Rob_Tasks.query.get(int(task_id))
     user_task = Rob_Review_Tasks.query.filter_by(task_id = task_id, user_id = current_user.get_id()).first()
     if not user_task:
-        user_task = Rob_Review_Tasks(task_id = task_id, task_name = task.task_name, user_id = current_user.get_id())
+        user_task = Rob_Review_Tasks(task_id = task_id, user_id = current_user.get_id())
         db.session.add(user_task)
         db.session.commit()
     return render_template('tarefas-usuario-blocos.html', task=task)

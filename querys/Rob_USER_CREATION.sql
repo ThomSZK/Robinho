@@ -9,7 +9,6 @@ ADD User_Type INTEGER;
 
 CREATE TABLE Rob_Review_Tasks (
 	Task_ID INTEGER NOT NULL,
-	Task_Name VARCHAR(255) NOT NULL,
 	User_ID INTEGER  NOT NULL,
 	Task_Grade INTEGER,
 	Task_Reviewed BOOL NOT NULL DEFAULT false,
