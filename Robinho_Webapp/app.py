@@ -116,6 +116,7 @@ class Rob_Review_Tasks(db.Model, UserMixin):
     task_reviewer = db.Column(db.INTEGER)
     task_time = db.Column(db.INTEGER)
 
+# VITUAL QUEUE OR A DB QUEUE WILL BE NEEDED 
 
 class RegisterForm(FlaskForm):
     User_Acc = StringField(validators=[InputRequired(), Length(min=2, max=255)], render_kw={"placeholder" : "Usuario", "class": "form-control form-control-user"})
