@@ -30,6 +30,7 @@ except ImportError:
     import socket
 
 
+USER_QUEUE = []
 
 app = Flask(__name__)
 app.secret_key = 'supersecrete_key123'
@@ -299,15 +300,18 @@ def sendmain():
 
     return "Executando"
 
+
+# MUST BE CHANGED TO THE LAB SERVER PATH
 @app.route("/savemain", methods = ['POST'])
 def savemain():
     print("Request save blockly:" + repr(request.get_data()))
 
-    with open("/tmp/esp_code_tmp.py", mode="wb") as f:
+    with open("/tmp/esp_code_tmp.py", mode="wb") as f, open("/Users/thomazSZK/Desktop/Robinho/Robinho_Webapp/Tasks/1/" + str(current_user.user_id) + '.py', mode="w+") as f2:
         f.write(prepend + request.get_data() + postpend)
+        f2.write(prepend.decode("utf-8") + request.get_data().decode("utf-8") + postpend.decode("utf-8"))
 
 
-    robinho_send(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
+    # robinho_send(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
 
     return "Executando"    
 
