@@ -13,6 +13,7 @@ from pyparsing import StringEnd
 from wtforms import StringField, PasswordField, SubmitField, RadioField
 from wtforms.validators import InputRequired, Length, ValidationError
 from flask_bcrypt import Bcrypt
+# from werkzeug import secure_filename
 #from RobinhoImageProcessing import main as img
 #from RobinhoImageProcessing.utils import detector, superimpose as si
 import cv2
@@ -156,19 +157,20 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.user_password, form.User_Password.data):
                 login_user(user, remember=True)
+                # print(user.user_id)
                 return redirect(url_for('dashboard'))
     return render_template("login.html", form=form)
 
 
 @app.route('/logout', methods=['GET', 'POST'])
-@login_required
+@login_required 
 def logout():
     logout_user()
     return redirect(url_for('login'))
 
 
 @app.route('/tarefa_aluno', methods=['GET', 'POST'])
-@login_required
+@login_required 
 def tarefa_aluno():
     return render_template('tarefas-usuario.html')
 
@@ -188,6 +190,10 @@ def tarefa_aluno_bloco():
 @app.route('/tarefa_professor', methods=['GET', 'POST'])
 @login_required
 def tarefa_professor():
+    # if(current_user.user_id == 6):
+    #     return render_template('tarefas-professor.html')
+    # else:
+    #     return render_template('indexRob.html')
     return render_template('tarefas-professor.html')
 
 @app.route('/tarefa_professor_bloco', methods=['GET', 'POST'])
@@ -245,7 +251,6 @@ def greet():
 
 
 prepend = b"""
-
 import machine
 import socket
 import time
@@ -254,26 +259,29 @@ import robinho_func
 from machine import Pin
 from machine import UART
 
+time.sleep(1)
+
 flash = Pin(4, Pin.OUT)
+robinho_func.blink(1.0, flash)
 uart = machine.UART(1, 9600, rx=12, tx=13)
 uart.init(9600, bits=8, parity=None, stop=1)
 uart.read()
 
-robinho_func.blink(0.1, flash)
-host = "10.0.0.100"  # as both code is running on same pc
-robinho_func.blink(0.1, flash)
+robinho_func.blink(1.0, flash)
+host = "192.168.101.2"  # as both code is running on same pc
 port = 5070  # socket server port number
-robinho_func.blink(0.1, flash)
 client_socket = socket.socket()  # instantiate
-robinho_func.blink(0.1, flash)
-client_socket.connect((host, port))  # connect to the server
+while True:
+  try:
+    client_socket.connect((host, port))  # connect to the server
+    break
+  except OSError:
+    robinho_func.blink(2.0, flash)
 robinho_func.blink(0.1, flash)
 
 """
 
 postpend = b"""
-
-robinho_func.blink(1.0, flash)
 
 client_socket.close()
 robinho_func.blink(1.0, flash)
@@ -282,7 +290,7 @@ robinho_func.blink(1.0, flash)
 
 @app.route("/sendmain", methods = ['POST'])
 def sendmain():
-    print(request.get_data())
+    print("Request send blockly:" + repr(request.get_data()))
 
     with open("/tmp/esp_code_tmp.py", mode="wb") as f:
         f.write(prepend + request.get_data() + postpend)
@@ -290,6 +298,18 @@ def sendmain():
     robinho_send(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
 
     return "Executando"
+
+@app.route("/savemain", methods = ['POST'])
+def savemain():
+    print("Request save blockly:" + repr(request.get_data()))
+
+    with open("/tmp/esp_code_tmp.py", mode="wb") as f:
+        f.write(prepend + request.get_data() + postpend)
+
+
+    robinho_send(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
+
+    return "Executando"    
 
 # TO BE DONE 
 @app.route("/stop", methods = ['POST'])
@@ -302,6 +322,13 @@ def stopping():
     robinho_stop(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
 
     return "Executando"
+
+
+@app.route("/savecode", methods=['POST'])
+def savecode():
+    f = request.files['file']
+    f.save(secure_filename(f.filename))
+    return 'Code saved succesfully'
 
 
 
@@ -512,41 +539,7 @@ Sec-WebSocket-Key: foo\r
 
 
 def robinho_send(op, host, port, passwd, src_file, dst_file):
-    # if len(sys.argv) not in (3, 5):
-    #     help(1)
-
-    # passwd = None
-    # for i in range(len(sys.argv)):
-    #     if sys.argv[i] == '-p':
-    #         sys.argv.pop(i)
-    #         passwd = sys.argv.pop(i)
-    #         break
-
-    # if not passwd:
-    #     import getpass
-    #     passwd = getpass.getpass()
-
-    # if ":" in sys.argv[1] and ":" in sys.argv[2]:
-    #     error("Operations on 2 remote files are not supported")
-    # if ":" not in sys.argv[1] and ":" not in sys.argv[2]:
-    #     error("One remote file is required")
-
-    # if ":" in sys.argv[1]:
-    #     op = "get"
-    #     host, port, src_file = parse_remote(sys.argv[1])
-    #     dst_file = sys.argv[2]
-    #     if os.path.isdir(dst_file):
-    #         basename = src_file.rsplit("/", 1)[-1]
-    #         dst_file += "/" + basename
-    # else:
-    #     op = "put"
-    #     host, port, dst_file = parse_remote(sys.argv[2])
-    #     src_file = sys.argv[1]
-    #     if dst_file[-1] == "/":
-    #         basename = src_file.rsplit("/", 1)[-1]
-    #         dst_file += basename
-
-    
+ 
     print("op:%s, host:%s, port:%d, passwd:%s." % (op, host, port, passwd))
     print(src_file, "->", dst_file)
 
@@ -634,7 +627,7 @@ def robinho_stop(op, host, port, passwd, src_file, dst_file):
 
 
 _op = "put"
-_host = "10.0.0.102"
+_host = "192.168.101.3"
 _port = 8266
 _passwd = "robinho"
 _src_file = "temp.py"
@@ -645,10 +638,4 @@ _dst_file = "main.py"
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
-
-
-
-
-
-
+    app.run(debug=True, host='0.0.0.0', port=5000, ssl_context='adhoc')
