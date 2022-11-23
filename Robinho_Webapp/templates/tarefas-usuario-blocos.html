@@ -122,7 +122,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="mb-2 text-gray-800">Tarefa {{task.task_order}} - {{task.task_name}}</h1>
+                    <h1 class="mb-2 text-gray-800">Tarefa {{task.task_id}} - {{task.task_name}}</h1>
 
                     <div class="text-right flex" style="margin-bottom:10px;">
                         <a href="#" class="btn btn-danger btn-lg">
@@ -134,9 +134,11 @@
                         </a>
                         <script>
                             function robinho_save(){
+                                // var task_id = task.task_id
                                 $.ajax({
                                     type: "POST",
-                                    url:"/savemain",
+                                    cache: false,
+                                    url: "/savemain",
                                     data: $("#blocklyCode")[0].innerText
                                 })
                             }
