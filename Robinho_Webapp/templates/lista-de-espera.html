@@ -144,6 +144,31 @@
                                 </span>
                                 <span class="text">Atualizar</span>
                             </a>
+                            <a href="#" class="btn btn-info btn-lg" onclick="javascript: robinho_dequeue();">
+                                <i class="fas fa-ban"></i>
+                            </a>
+                            <script>
+                                function robinho_dequeue(){
+                                    $.ajax({
+                                        type: "POST",
+                                        cache: false,
+                                        url: "/dequeue",
+                                    })
+                                }
+                            </script>
+                            <a href="#" class="btn btn-success btn-lg" onclick="robinho_send()">
+                            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+                            <script>
+                                function robinho_send(){
+                                    $.ajax({
+                                        type: "POST",
+                                        url:"/sendmain",
+                                        // data: $("#blocklyCode")[0].innerText
+                                    })
+                                }
+                            </script>
+                                <i class="fas fa-play"></i>
+                            </a>
                         </div>
                     </div>
 

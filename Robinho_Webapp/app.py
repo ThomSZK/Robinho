@@ -370,8 +370,12 @@ def queue():
 
 
 # this function will be handled by the teacher
-# @app.route("/dequeue", methods=['POST'])
-# def queue():
+@app.route("/dequeue", methods=['POST'])
+def dequeue():
+    user = Rob_Queue.query.first()
+    db.session.delete(user)
+    db.session.commit()
+    return 'Dequeued!'
 
 
 
