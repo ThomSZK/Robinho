@@ -27,6 +27,12 @@ while True:
     robinho_func.blink(2.0, flash)
 robinho_func.blink(0.1, flash)
 
+var = None
+
+
+for i in range (1):
+  robinho_func.arduino_cmd(0b00011100, uart)
+var =
 
 
 client_socket.close()

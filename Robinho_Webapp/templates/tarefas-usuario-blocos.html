@@ -134,7 +134,6 @@
                         </a>
                         <script>
                             function robinho_save(){
-                                // var task_id = task.task_id
                                 $.ajax({
                                     type: "POST",
                                     cache: false,
@@ -149,8 +148,8 @@
                             function robinho_send(){
                                 $.ajax({
                                     type: "POST",
-                                    url:"/sendmain",
-                                    data: $("#blocklyCode")[0].innerText
+                                    url:"/queue",
+                                    // data: $("#blocklyCode")[0].innerText
                                 })
                             }
                         </script>

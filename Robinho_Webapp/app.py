@@ -117,6 +117,16 @@ class Rob_Review_Tasks(db.Model, UserMixin):
     task_reviewer = db.Column(db.INTEGER)
     task_time = db.Column(db.INTEGER)
 
+class Rob_Queue(db.Model, UserMixin):
+    __table_args__ = {'schema' : 'public'}
+    __tablename__ = "rob_queue"
+    queue_id = db.Column(db.INTEGER, primary_key = True, nullable = False)
+    user_id = db.Column(db.INTEGER, nullable = False)
+    user_name = db.Column(db.VARCHAR(255), nullable = False)
+    task_id = db.Column(db.INTEGER, nullable = False)
+
+
+
 # VITUAL QUEUE OR A DB QUEUE WILL BE NEEDED 
 
 class RegisterForm(FlaskForm):
@@ -321,7 +331,7 @@ def savemain():
     # robinho_send(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
     return "Blockly Salvo"    
 
-# TO BE DONE 
+# TO BE DONE maybe?
 @app.route("/stop", methods = ['POST'])
 def stopping():
     print(request.get_data())
@@ -339,6 +349,29 @@ def savecode():
     f = request.files['file']
     f.save(secure_filename(f.filename))
     return 'Code saved succesfully'
+
+
+
+@app.route("/queue", methods=['POST'])
+def queue():
+    user = Rob_User.query.filter_by(user_id = current_user.get_id()).first()
+    task_id = user.user_current_task
+    user_task = Rob_Review_Tasks.query.filter_by(task_id = task_id, user_id = current_user.get_id()).first()
+    if not user_task:
+        user_task = Rob_Review_Tasks(task_id = task_id, user_id = current_user.get_id())
+        db.session.add(user_task)
+        db.session.commit()
+    user_queue = Rob_Queue.query.filter_by(task_id = task_id, user_id = current_user.get_id()).first()
+    if not user_queue:
+        user_task = Rob_Queue(task_id = task_id, user_id = current_user.get_id(), user_name = user.user_acc)
+        db.session.add(user_task)
+        db.session.commit()
+    return 'Queued!'
+
+
+# this function will be handled by the teacher
+# @app.route("/dequeue", methods=['POST'])
+# def queue():
 
 
 
