@@ -196,7 +196,9 @@ def tarefa_professor():
     #     return render_template('tarefas-professor.html')
     # else:
     #     return render_template('indexRob.html')
-    return render_template('tarefas-professor.html')
+    user_tasks = db.session.query(Rob_Review_Tasks, Rob_Tasks, Rob_User).join(Rob_Tasks, Rob_Tasks.task_id == Rob_Review_Tasks.task_id).join(Rob_User, Rob_User.user_id == Rob_Review_Tasks.user_id).order_by(Rob_Review_Tasks.task_id.desc(), Rob_User.user_acc).all()
+    print(user_tasks)
+    return render_template('tarefas-professor.html', user_tasks=user_tasks)
 
 @app.route('/tarefa_professor_bloco', methods=['GET', 'POST'])
 @login_required

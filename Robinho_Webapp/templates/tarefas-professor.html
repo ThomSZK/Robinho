@@ -149,162 +149,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for task in user_tasks %}
                                         <tr>
                                             <td></td>
-                                            <td class="text-center">Tarefa 5</td>
-                                            <td class="text-center">Brielle Williamson</td>
+                                            <td class="text-center">Tarefa {{task.Rob_Tasks.task_id}} - {{task.Rob_Tasks.task_name}}</td>
+                                            <td class="text-center">{{task.Rob_User.user_acc}}</td>
+                                            {% if task.Rob_Review_Tasks.task_grade %}
+                                            <td class="text-center">{{task.Rob_Review_Tasks.task_grade}}</td>
+                                            {% else %}
                                             <td class="text-center">Pendente</td>
+                                            {% endif %}
                                         </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 2</td>
-                                            <td class="text-center">Rhona Davidson</td>
-                                            <td class="text-center">5</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 2</td>
-                                            <td class="text-center">Sonya Frost</td>
-                                            <td class="text-center">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 2</td>
-                                            <td class="text-center">Tatyana Fitzpatrick</td>
-                                            <td class="text-center">9</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 3</td>
-                                            <td class="text-center">Michael Silva</td>
-                                            <td class="text-center">6</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 4</td>
-                                            <td class="text-center">Gloria Little</td>
-                                            <td class="text-center">Pendente</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 5</td>
-                                            <td class="text-center">Dai Rios</td>
-                                            <td class="text-center">Pendente</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 3</td>
-                                            <td class="text-center">Jenette Caldwell</td>
-                                            <td class="text-center">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 1</td>
-                                            <td class="text-center">Yuri Berry</td>
-                                            <td class="text-center">0</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 2</td>
-                                            <td class="text-center">Doris Wilder</td>
-                                            <td class="text-center">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 1</td>
-                                            <td class="text-center">Doris Wilder</td>
-                                            <td class="text-center">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 5</td>
-                                            <td class="text-center">Angelica Ramos</td>
-                                            <td class="text-center">Pendente</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 2</td>
-                                            <td class="text-center">Jennifer Chang</td>
-                                            <td class="text-center">8</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 3</td>
-                                            <td class="text-center">Fiona Green</td>
-                                            <td class="text-center">8</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 2</td>
-                                            <td class="text-center">Michelle House</td>
-                                            <td class="text-center">7</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 3</td>
-                                            <td class="text-center">Martena Mccray</td>
-                                            <td class="text-center">6</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 4</td>
-                                            <td class="text-center">Vivian Harrell</td>
-                                            <td class="text-center">Pendente</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 3</td>
-                                            <td class="text-center">Jackson Bradshaw</td>
-                                            <td class="text-center">6</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 2</td>
-                                            <td class="text-center">Olivia Liang</td>
-                                            <td class="text-center">6</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 2</td>
-                                            <td class="text-center">Bruno Nash</td>
-                                            <td class="text-center">8</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 3</td>
-                                            <td class="text-center">Bruno Nash</td>
-                                            <td class="text-center">3</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 2</td>
-                                            <td class="text-center">Zorita Serrano</td>
-                                            <td class="text-center">6</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 3</td>
-                                            <td class="text-center">Jennifer Acosta</td>
-                                            <td class="text-center">4</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 5</td>
-                                            <td class="text-center">Lael Greer</td>
-                                            <td class="text-center">Pendente</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 5</td>
-                                            <td class="text-center">Jonas Alexander</td>
-                                            <td class="text-center">Pendente</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">Tarefa 3</td>
-                                            <td class="text-center">Michael Bruce</td>
-                                            <td class="text-center">9</td>
-                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -382,7 +238,7 @@
                     {
                         targets: -4,
                         data: null,
-                        defaultContent: '<a href="#" class="btn btn-sm"><i class="fas fa-eye"></i>',
+                        defaultContent: '<a href="{{url_for("tarefa_professor_bloco")}}" class="btn btn-sm"><i class="fas fa-eye"></i>',
                     },
                 ],
                 "language": {
