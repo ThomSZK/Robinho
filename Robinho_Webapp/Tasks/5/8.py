@@ -27,6 +27,7 @@ while True:
     robinho_func.blink(2.0, flash)
 robinho_func.blink(0.1, flash)
 
+'isso aqui ta um problema'
 
 
 client_socket.close()

@@ -92,6 +92,7 @@ class Rob_User(db.Model, UserMixin):
     user_acc = db.Column(db.VARCHAR(255), unique = True, nullable = False)
     user_password = db.Column(db.VARCHAR(255))
     user_type = db.Column(db.INTEGER)
+    user_current_task = db.Column(db.INTEGER)
 
     def get_id(self):
         return self.user_id
@@ -115,6 +116,16 @@ class Rob_Review_Tasks(db.Model, UserMixin):
     task_reviewed = db.Column(db.BOOLEAN, nullable = False, default = False)
     task_reviewer = db.Column(db.INTEGER)
     task_time = db.Column(db.INTEGER)
+
+class Rob_Queue(db.Model, UserMixin):
+    __table_args__ = {'schema' : 'public'}
+    __tablename__ = "rob_queue"
+    queue_id = db.Column(db.INTEGER, primary_key = True, nullable = False)
+    user_id = db.Column(db.INTEGER, nullable = False)
+    user_name = db.Column(db.VARCHAR(255), nullable = False)
+    task_id = db.Column(db.INTEGER, nullable = False)
+
+
 
 # VITUAL QUEUE OR A DB QUEUE WILL BE NEEDED 
 
@@ -181,12 +192,16 @@ def tarefa_aluno():
 def tarefa_aluno_bloco():
     task_id = request.args.get('id')
     task = Rob_Tasks.query.get(int(task_id))
-    user_task = Rob_Review_Tasks.query.filter_by(task_id = task_id, user_id = current_user.get_id()).first()
-    if not user_task:
-        user_task = Rob_Review_Tasks(task_id = task_id, user_id = current_user.get_id())
-        db.session.add(user_task)
-        db.session.commit()
-    return render_template('tarefas-usuario-blocos.html', task=task)
+    user_task = Rob_User.query.filter_by(user_id = current_user.get_id()).first()
+    user_task.user_current_task = task_id
+    db.session.commit()
+
+    # user_task = Rob_Review_Tasks.query.filter_by(task_id = task_id, user_id = current_user.get_id()).first()
+    # if not user_task:
+    #     user_task = Rob_Review_Tasks(task_id = task_id, user_id = current_user.get_id())
+    #     db.session.add(user_task)
+    #     db.session.commit()
+    return render_template('tarefas-usuario-blocos.html', task = task)
 
 
 @app.route('/tarefa_professor', methods=['GET', 'POST'])
@@ -292,7 +307,7 @@ robinho_func.blink(1.0, flash)
 
 """
 
-@app.route("/sendmain", methods = ['POST'])
+@app.route("/sendmain", methods = ['POST', 'GET'])
 def sendmain():
     print("Request send blockly:" + repr(request.get_data()))
 
@@ -305,20 +320,20 @@ def sendmain():
 
 
 # MUST BE CHANGED TO THE LAB SERVER PATH
-@app.route("/savemain", methods = ['POST'])
+@app.route("/savemain", methods = ['POST', 'GET'])
 def savemain():
-    print("Request save blockly:" + repr(request.get_data()))
-
-    with open("/tmp/esp_code_tmp.py", mode="wb") as f, open("/Users/thomazSZK/Desktop/Robinho/Robinho_Webapp/Tasks/1/" + str(current_user.user_id) + '.py', mode="w+") as f2:
+    print("Request save blockly:" + repr(request.get_data("blockly")))
+    user_task = Rob_User.query.filter_by(user_id = current_user.get_id()).first()
+    with open("/tmp/esp_code_tmp.py", mode="wb") as f, open("/Users/thomazSZK/Desktop/Robinho/Robinho_Webapp/Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.py', mode="w+") as f2:
+        print(2)
         f.write(prepend + request.get_data() + postpend)
+        print(3)
         f2.write(prepend.decode("utf-8") + request.get_data().decode("utf-8") + postpend.decode("utf-8"))
-
-
+        print(4)
     # robinho_send(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
+    return "Blockly Salvo"    
 
-    return "Executando"    
-
-# TO BE DONE 
+# TO BE DONE maybe?
 @app.route("/stop", methods = ['POST'])
 def stopping():
     print(request.get_data())
@@ -336,6 +351,33 @@ def savecode():
     f = request.files['file']
     f.save(secure_filename(f.filename))
     return 'Code saved succesfully'
+
+
+
+@app.route("/queue", methods=['POST'])
+def queue():
+    user = Rob_User.query.filter_by(user_id = current_user.get_id()).first()
+    task_id = user.user_current_task
+    user_task = Rob_Review_Tasks.query.filter_by(task_id = task_id, user_id = current_user.get_id()).first()
+    if not user_task:
+        user_task = Rob_Review_Tasks(task_id = task_id, user_id = current_user.get_id())
+        db.session.add(user_task)
+        db.session.commit()
+    user_queue = Rob_Queue.query.filter_by(task_id = task_id, user_id = current_user.get_id()).first()
+    if not user_queue:
+        user_task = Rob_Queue(task_id = task_id, user_id = current_user.get_id(), user_name = user.user_acc)
+        db.session.add(user_task)
+        db.session.commit()
+    return 'Queued!'
+
+
+# this function will be handled by the teacher
+@app.route("/dequeue", methods=['POST'])
+def dequeue():
+    user = Rob_Queue.query.first()
+    db.session.delete(user)
+    db.session.commit()
+    return 'Dequeued!'
 
 
 
