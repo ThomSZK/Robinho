@@ -273,6 +273,7 @@ def greet():
 
 
 prepend = b"""
+
 import machine
 import socket
 import time
@@ -325,21 +326,23 @@ def sendmain():
     user = Rob_Queue.query.first()
     # with open("/tmp/esp_code_tmp.py", mode="wb") as f:
     #     f.write(prepend + request.get_data() + postpend)
-    with open("/Users/thomazSZK/Desktop/Robinho/Robinho_Webapp/Tasks/" + str(user.task_id) + "/" + str(user.user_id) + '.py', mode="r") as f:
+    path = "./Tasks/" + str(user.task_id) + "/" + str(user.user_id) + '.py'
+    with open(path, mode="r") as f:
         data = f.read()
         print(data)
-    path = "/Users/thomazSZK/Desktop/Robinho/Robinho_Webapp/Tasks/" + str(user.task_id) + "/" + str(user.user_id) + '.py'
     robinho_send(_op, _host, _port, _passwd, path, _dst_file)
 
     return "Executando"
 
 
-# MUST BE CHANGED TO THE LAB SERVER PATH !!!!!!!
+
 @app.route("/savemain", methods = ['POST', 'GET'])
 def savemain():
     print("Request save blockly:" + repr(request.get_data("blockly")))
     user_task = Rob_User.query.filter_by(user_id = current_user.get_id()).first()
-    with open("/tmp/esp_code_tmp.py", mode="wb") as f, open("/Users/thomazSZK/Desktop/Robinho/Robinho_Webapp/Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.py', mode="w+") as f2:
+    mypath = "./Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.py'
+    os.makedirs(os.path.dirname(mypath), exist_ok=True)
+    with open("./MicroPython/sample.py", mode="wb") as f, open(mypath, mode="w+") as f2:
         print(2)
         f.write(prepend + request.get_data() + postpend)
         print(3)
