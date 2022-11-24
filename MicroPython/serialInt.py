@@ -35,23 +35,20 @@ def sendPose(pose):
     try:
         msg = 0
         while getack("x"):
-            #msg = ser.read(1)
-            #print(msg)
-            print('...x')
-        
+            pass
         ser.write(x.to_bytes(1, "little"))
 
         while getack("y"):
-            print('...y')
+            pass
 
         ser.write(y.to_bytes(1, "little"))
         while getack("z"):
-            print('...z')
+            pass
 
         ser.write(a.to_bytes(1, "little"))
 
         while getack("p"):
-            print('...pose end')
+            pass
     except Exception as e:
         print('error: serial to duino', e)
 
@@ -81,8 +78,5 @@ if __name__ == '__main__':
         pose = recvPose()
         sendPose(pose)
         exec(code)
-        #ser.write(b'00000001')
-        #x = ser.read()          # read one byte
-        #line = ser.readline()   # read a '\n' terminated line
 
 
