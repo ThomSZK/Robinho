@@ -152,7 +152,7 @@
                                         {% for task in user_tasks %}
                                         <tr>
                                             <td></td>
-                                            <td class="text-center">Tarefa {{task.Rob_Tasks.task_id}} - {{task.Rob_Tasks.task_name}}</td>
+                                            <td class="text-center">Tarefa {{task.Rob_Tasks.task_order}} - {{task.Rob_Tasks.task_name}}</td>
                                             <td class="text-center">{{task.Rob_User.user_acc}}</td>
                                             {% if task.Rob_Review_Tasks.task_grade %}
                                             <td class="text-center">{{task.Rob_Review_Tasks.task_grade}}</td>

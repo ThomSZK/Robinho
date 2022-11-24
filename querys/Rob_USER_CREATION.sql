@@ -48,3 +48,13 @@ INSERT INTO Rob_Tasks (Task_ID, Task_Name, Task_Level, Task_Order)
 VALUES (9, 'Levar a caixa no lugar', 3, 2);
 INSERT INTO Rob_Tasks (Task_ID, Task_Name, Task_Level, Task_Order)
 VALUES (10, 'Genius', 3, 3);
+
+ALTER TABLE Rob_User
+add user_current_task integer;
+
+CREATE table Rob_Queue (
+	Queue_Id serial primary key,
+	User_Id integer not null,
+	User_Name varchar(255) not null,
+	Task_Id integer not null
+);

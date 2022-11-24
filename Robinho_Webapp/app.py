@@ -231,7 +231,8 @@ def pov_feed():
 @app.route('/lista_espera', methods=['GET', 'POST'])
 @login_required
 def lista_espera():
-    return render_template('lista-de-espera.html')
+    queue = db.session.query(Rob_Queue, Rob_Tasks).join(Rob_Tasks, Rob_Tasks.task_id == Rob_Queue.task_id).order_by(Rob_Queue.queue_id).all()
+    return render_template('lista-de-espera.html', queue=queue)
  
 
 @app.route('/register', methods=['GET', 'POST'])

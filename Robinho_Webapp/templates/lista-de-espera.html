@@ -20,7 +20,7 @@
     <link href="{{url_for('static', filename='css/sb-admin-2.min.css')}}" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="{{url_for('static',filename='vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
 
 </head>
 
@@ -136,19 +136,13 @@
                     <!-- Page Heading -->
                     <h1 class="mb-2 text-gray-800">Lista de espera</h1>
 
-                    <div class="row">
+                    <div class="row form-group">
                         <div class="col-md-12 text-right">
-                            <a href="#" class="btn btn-info btn-icon-split" style="margin-bottom:10px;">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-retweet"></i>
-                                </span>
-                                <span class="text">Atualizar</span>
-                            </a>
                             <a href="#" class="btn btn-info btn-lg" onclick="javascript: robinho_dequeue();">
                                 <i class="fas fa-ban"></i>
                             </a>
                             <script>
-                                function robinho_dequeue(){
+                                function robinho_dequeue() {
                                     $.ajax({
                                         type: "POST",
                                         cache: false,
@@ -157,16 +151,16 @@
                                 }
                             </script>
                             <a href="#" class="btn btn-success btn-lg" onclick="robinho_send()">
-                            <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-                            <script>
-                                function robinho_send(){
-                                    $.ajax({
-                                        type: "POST",
-                                        url:"/sendmain",
-                                        // data: $("#blocklyCode")[0].innerText
-                                    })
-                                }
-                            </script>
+                                <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+                                <script>
+                                    function robinho_send() {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "/sendmain",
+                                            // data: $("#blocklyCode")[0].innerText
+                                        })
+                                    }
+                                </script>
                                 <i class="fas fa-play"></i>
                             </a>
                         </div>
@@ -186,48 +180,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for q in queue %}
                                         <tr>
                                             <td></td>
-                                            <td class="text-center">4</td>
-                                            <td class="text-center">Brielle Williamson</td>
-                                            <td class="text-center">Tarefa 5</td>
+                                            <td class="text-center">{{loop.index}}</td>
+                                            <td class="text-center">{{q.Rob_Queue.user_name}}</td>
+                                            <td class="text-center">Tarefa {{q.Rob_Tasks.task_order}} - {{q.Rob_Tasks.task_name}}</td>
                                         </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">1</td>
-                                            <td class="text-center">Gloria Little</td>
-                                            <td class="text-center">Tarefa 4</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">5</td>
-                                            <td class="text-center">Dai Rios</td>
-                                            <td class="text-center">Tarefa 5</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">2</td>
-                                            <td class="text-center">Angelica Ramos</td>
-                                            <td class="text-center">Tarefa 5</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">3</td>
-                                            <td class="text-center">Vivian Harrell</td>
-                                            <td class="text-center">Tarefa 4</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">7</td>
-                                            <td class="text-center">Lael Greer</td>
-                                            <td class="text-center">Tarefa 5</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="text-center">6</td>
-                                            <td class="text-center">Jonas Alexander</td>
-                                            <td class="text-center">Tarefa 5</td>
-                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
