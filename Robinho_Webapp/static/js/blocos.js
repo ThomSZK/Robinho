@@ -124,7 +124,7 @@ Blockly.Blocks['camera_cor'] = {
             .appendField("cor da camera");
         this.setOutput(true, null);
         this.setColour(230);
-        this.setTooltip("Retorna a cor lida pela câmera");
+        this.setTooltip("Retorna a cor lida pela cï¿½mera");
         this.setHelpUrl("");
     }
 };
@@ -422,17 +422,17 @@ Blockly.Python['se_senao'] = function (block) {
 };
 
 Blockly.Python['camera_cor'] = function (block) {
-    var code = 'robinho_func.read_camera_color(uart);\n';
+    var code = 'robinho_func.read_camera_color(uart)\n';
     return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
 Blockly.Python['abrir_garra'] = function (block) {
-    var code = 'robinho_func.arduino_cmd(0b00011010, uart);\n';
+    var code = 'robinho_func.arduino_cmd(0b00011010, uart)\n';
     return code;
 };
 
 Blockly.Python['fechar_garra'] = function (block) {
-    var code = 'robinho_func.arduino_cmd(0b00011011, uart);\n';
+    var code = 'robinho_func.arduino_cmd(0b00011011, uart)\n';
     return code;
 };
 
