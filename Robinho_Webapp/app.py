@@ -234,9 +234,27 @@ def tarefa_professor():
 @app.route('/tarefa_professor_bloco', methods=['GET', 'POST'])
 @login_required
 def tarefa_professor_bloco():
-    task_id = request.args.get('id')
-    task = Rob_Tasks.query.get(int(task_id))
-    return render_template('tarefas-professor-blocos.html', task = task, user = Rob_User.query.filter_by(user_id = current_user.get_id()).first())
+    myid = request.args.get('id')
+    task_id, user_id = myid.split('-')
+
+    task = Rob_Review_Tasks.query.get((int(task_id), int(user_id)))
+
+    mypath = "./Tasks/" + str(task.task_id) + "/" + str(task.user_id) + '.json'
+    try:
+        with open(mypath, mode="r") as f2:
+            jsonc = f2.read()
+        blockly = json.loads(jsonc)
+    except Exception as e:
+        print(e)
+        blockly = None
+
+    print("tarefa_professor_bloco", blockly)
+    
+    return render_template('tarefas-professor-blocos.html', 
+    task = task, 
+    user = Rob_User.query.filter_by(user_id = current_user.get_id()).first(),
+    blocklyload = blockly
+    )
 
 @app.route('/video_feed')
 def video_feed():

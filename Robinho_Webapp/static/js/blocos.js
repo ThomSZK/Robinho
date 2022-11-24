@@ -327,8 +327,8 @@ var demoWorkspace = Blockly.inject('blocklyDiv',
         media: 'https://unpkg.com/blockly/media/',
         toolbox: toolbox
     });
-    
-if(blocklyload) {
+
+if((typeof blocklyload !== 'undefined') && blocklyload) {
     Blockly.serialization.workspaces.load(blocklyload, demoWorkspace);
 }
 
