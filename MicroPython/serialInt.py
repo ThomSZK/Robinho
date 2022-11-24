@@ -14,6 +14,11 @@ uart = 0
 ser = 0
 code = open('/home/arena/Documents/GitHub/Robinho/MicroPython/sample.py').read()
 
+def getack(ct):
+    ack = ser.read(1)
+    print("ack", ct , ack)
+    return ack != b'1'
+
 def recvPose():
     try:
         data = socketA.recv(1024).decode()  # receive response
@@ -26,47 +31,55 @@ def recvPose():
 
 def sendPose(pose):
     x,y,a = pose
-    ser.write((0x0).to_bytes(1, "little"))
+    ser.write(0x00.to_bytes(1, "little"))
     try:
-        while ser.read() != 1:
+        msg = 0
+        while getack("x"):
+            #msg = ser.read(1)
+            #print(msg)
             print('...x')
         
         ser.write(x.to_bytes(1, "little"))
 
-        while ser.read() != 1:
+        while getack("y"):
             print('...y')
 
         ser.write(y.to_bytes(1, "little"))
-        while ser.read() != 1:
+        while getack("z"):
             print('...z')
 
         ser.write(a.to_bytes(1, "little"))
-    except:
-        print('error: serial to duino')
+
+        while getack("p"):
+            print('...pose end')
+    except Exception as e:
+        print('error: serial to duino', e)
 
 
 class robinho_func():
     def arduino_cmd(cmd,foo=0):
-        print("send", bin(cmd))
 
         pose = recvPose()
         sendPose(pose)
 
-        ser.write((cmd).to_bytes(1, "little"))
+        print("send", hex(cmd))
+        ser.write(cmd.to_bytes(1, "little"))
 
-        while ser.read() != 1:
-            print('POSING')
-            if(ser.read()!=0):
-                break
+        while getack("loop"):
             pose = recvPose()
             sendPose(pose)
+            print("waiting after ", hex(cmd))
        
 
-        print(ser.read())
+        print("end func")
 
+import time
 
 if __name__ == '__main__':
     with serial.Serial('/dev/ttyUSB0', 9600, timeout=1) as ser:
+        time.sleep(3)
+        pose = recvPose()
+        sendPose(pose)
         exec(code)
         #ser.write(b'00000001')
         #x = ser.read()          # read one byte
