@@ -185,7 +185,7 @@ def logout():
 @app.route('/tarefa_aluno', methods=['GET', 'POST'])
 @login_required 
 def tarefa_aluno():
-    return render_template('tarefas-usuario.html')
+    return render_template('tarefas-usuario.html', user = Rob_User.query.filter_by(user_id = current_user.get_id()).first())
 
 @app.route('/tarefa_aluno_bloco', methods=['GET', 'POST'])
 @login_required
@@ -201,7 +201,7 @@ def tarefa_aluno_bloco():
     #     user_task = Rob_Review_Tasks(task_id = task_id, user_id = current_user.get_id())
     #     db.session.add(user_task)
     #     db.session.commit()
-    return render_template('tarefas-usuario-blocos.html', task = task)
+    return render_template('tarefas-usuario-blocos.html', task = task, user = Rob_User.query.filter_by(user_id = current_user.get_id()).first())
 
 
 @app.route('/tarefa_professor', methods=['GET', 'POST'])
@@ -213,14 +213,14 @@ def tarefa_professor():
     #     return render_template('indexRob.html')
     user_tasks = db.session.query(Rob_Review_Tasks, Rob_Tasks, Rob_User).join(Rob_Tasks, Rob_Tasks.task_id == Rob_Review_Tasks.task_id).join(Rob_User, Rob_User.user_id == Rob_Review_Tasks.user_id).order_by(Rob_Review_Tasks.task_id.desc(), Rob_User.user_acc).all()
     print(user_tasks)
-    return render_template('tarefas-professor.html', user_tasks=user_tasks)
+    return render_template('tarefas-professor.html', user_tasks=user_tasks, user = Rob_User.query.filter_by(user_id = current_user.get_id()).first())
 
 @app.route('/tarefa_professor_bloco', methods=['GET', 'POST'])
 @login_required
 def tarefa_professor_bloco():
     task_id = request.args.get('id')
     task = Rob_Tasks.query.get(int(task_id))
-    return render_template('tarefas-professor-blocos.html', task = task)
+    return render_template('tarefas-professor-blocos.html', task = task, user = Rob_User.query.filter_by(user_id = current_user.get_id()).first())
 
 @app.route('/video_feed')
 def video_feed():
@@ -234,7 +234,7 @@ def pov_feed():
 @login_required
 def lista_espera():
     queue = db.session.query(Rob_Queue, Rob_Tasks).join(Rob_Tasks, Rob_Tasks.task_id == Rob_Queue.task_id).order_by(Rob_Queue.queue_id).all()
-    return render_template('lista-de-espera.html', queue=queue)
+    return render_template('lista-de-espera.html', queue=queue, user = Rob_User.query.filter_by(user_id = current_user.get_id()).first())
  
 
 @app.route('/register', methods=['GET', 'POST'])
