@@ -150,8 +150,10 @@
                                     </thead>
                                     <tbody>
                                         {% for task in user_tasks %}
-                                        <tr>
-                                            <td></td>
+                                        <tr id="{{task.Rob_Tasks.task_id}}">
+                                            <td>
+                                                <input type="hidden" value="{{task.Rob_Tasks.task_id}}">
+                                            </td>
                                             <td class="text-center">Tarefa {{task.Rob_Tasks.task_order}} - {{task.Rob_Tasks.task_name}}</td>
                                             <td class="text-center">{{task.Rob_User.user_acc}}</td>
                                             {% if task.Rob_Review_Tasks.task_grade %}
@@ -238,7 +240,9 @@
                     {
                         targets: -4,
                         data: null,
-                        defaultContent: '<a href="{{url_for("tarefa_professor_bloco")}}" class="btn btn-sm"><i class="fas fa-eye"></i>',
+                        render: function (data, type, row, meta) {
+                            return '<a href="{{url_for("tarefa_professor_bloco")}}?id=' + row.DT_RowId.replace('row_', '') + '" class="btn btn-sm"><i class="fas fa-eye"></i></a>';
+                        }
                     },
                 ],
                 "language": {
@@ -246,7 +250,6 @@
                 }
             });
         });
-
     </script>
 
 </body>

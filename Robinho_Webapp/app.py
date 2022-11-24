@@ -218,7 +218,9 @@ def tarefa_professor():
 @app.route('/tarefa_professor_bloco', methods=['GET', 'POST'])
 @login_required
 def tarefa_professor_bloco():
-    return render_template('tarefas-professor-blocos.html')
+    task_id = request.args.get('id')
+    task = Rob_Tasks.query.get(int(task_id))
+    return render_template('tarefas-professor-blocos.html', task = task)
 
 @app.route('/video_feed')
 def video_feed():
