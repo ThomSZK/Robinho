@@ -327,6 +327,10 @@ var demoWorkspace = Blockly.inject('blocklyDiv',
         media: 'https://unpkg.com/blockly/media/',
         toolbox: toolbox
     });
+    
+if(blocklyload) {
+    Blockly.serialization.workspaces.load(blocklyload, demoWorkspace);
+}
 
 demoWorkspace.addChangeListener(showCode);
 

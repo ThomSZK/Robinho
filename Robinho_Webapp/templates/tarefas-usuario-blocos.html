@@ -19,6 +19,10 @@
     <!-- Custom styles for this template-->
     <link href="{{url_for('static', filename='css/sb-admin-2.min.css')}}" rel="stylesheet">
 
+    <script>
+        var blocklyload = JSON.parse('{{ blocklyload | tojson | safe }}');
+    </script>
+     
 </head>
 
 <body id="page-top">
@@ -139,7 +143,14 @@
                                     cache: false,
                                     url: "/savemain",
                                     data: $("#blocklyCode")[0].innerText
-                                })
+                                });
+                                $.ajax({
+                                    type: "POST",
+                                    cache: false,
+                                    url: "/savemain_blockly",
+                                    data: JSON.stringify(Blockly.serialization.workspaces.save(demoWorkspace)),
+                                    contentType: "application/json",
+                                });                              
                             }
                         </script>
                         <a href="#" class="btn btn-success btn-lg" onclick="robinho_send()">

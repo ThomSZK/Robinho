@@ -25,6 +25,7 @@ import sys
 import os
 import time
 import struct
+import json
 try:
     import usocket as socket
 except ImportError:
@@ -202,7 +203,21 @@ def tarefa_aluno_bloco():
     #     user_task = Rob_Review_Tasks(task_id = task_id, user_id = current_user.get_id())
     #     db.session.add(user_task)
     #     db.session.commit()
-    return render_template('tarefas-usuario-blocos.html', task = task, user = Rob_User.query.filter_by(user_id = current_user.get_id()).first())
+
+    mypath = "./Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.json'
+    try:
+        with open(mypath, mode="r") as f2:
+            jsonc = f2.read()
+        blockly = json.loads(jsonc)
+    except Exception as e:
+        print(e)
+        blockly = None
+
+    return render_template('tarefas-usuario-blocos.html', 
+      task = task, 
+      user = Rob_User.query.filter_by(user_id = current_user.get_id()).first(), 
+      blocklyload = blockly
+    )
 
 
 @app.route('/tarefa_professor', methods=['GET', 'POST'])
@@ -337,11 +352,9 @@ def sendmain():
     
     return "Executando"
 
-
-
 @app.route("/savemain", methods = ['POST', 'GET'])
 def savemain():
-    print("Request save blockly:" + repr(request.get_data("blockly")))
+    print("Request save py:" + repr(request.get_data("blockly")))
     user_task = Rob_User.query.filter_by(user_id = current_user.get_id()).first()
     mypath = "./Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.py'
     os.makedirs(os.path.dirname(mypath), exist_ok=True)
@@ -353,6 +366,17 @@ def savemain():
         print(4)
     # robinho_send(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
     return "Blockly Salvo"    
+
+@app.route("/savemain_blockly", methods = ['POST'])
+def savemain_blockly():
+    print("Request save blockly:", request.json)
+    user_task = Rob_User.query.filter_by(user_id = current_user.get_id()).first()
+    mypath = "./Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.json'
+    os.makedirs(os.path.dirname(mypath), exist_ok=True)
+    with open(mypath, mode="w+") as f2:
+        f2.write(json.dumps(request.json))
+    # robinho_send(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
+    return "Blockly json Salvo"   
 
 # TO BE DONE maybe?
 # @app.route("/stop", methods = ['POST'])
@@ -399,7 +423,6 @@ def dequeue():
     db.session.delete(user)
     db.session.commit()
     return 'Dequeued!'
-
 
 
 
