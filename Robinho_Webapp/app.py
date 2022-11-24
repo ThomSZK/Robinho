@@ -310,17 +310,21 @@ robinho_func.blink(1.0, flash)
 
 @app.route("/sendmain", methods = ['POST', 'GET'])
 def sendmain():
-    print("Request send blockly:" + repr(request.get_data()))
-
-    with open("/tmp/esp_code_tmp.py", mode="wb") as f:
-        f.write(prepend + request.get_data() + postpend)
-
-    robinho_send(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
+    # print("Request send blockly:" + repr(request.get_data()))
+    print('Iniciando envio de codigo: ')
+    user = Rob_Queue.query.first()
+    # with open("/tmp/esp_code_tmp.py", mode="wb") as f:
+    #     f.write(prepend + request.get_data() + postpend)
+    with open("/Users/thomazSZK/Desktop/Robinho/Robinho_Webapp/Tasks/" + str(user.task_id) + "/" + str(user.user_id) + '.py', mode="r") as f:
+        data = f.read()
+        print(data)
+    path = "/Users/thomazSZK/Desktop/Robinho/Robinho_Webapp/Tasks/" + str(user.task_id) + "/" + str(user.user_id) + '.py'
+    robinho_send(_op, _host, _port, _passwd, path, _dst_file)
 
     return "Executando"
 
 
-# MUST BE CHANGED TO THE LAB SERVER PATH
+# MUST BE CHANGED TO THE LAB SERVER PATH !!!!!!!
 @app.route("/savemain", methods = ['POST', 'GET'])
 def savemain():
     print("Request save blockly:" + repr(request.get_data("blockly")))
@@ -335,16 +339,16 @@ def savemain():
     return "Blockly Salvo"    
 
 # TO BE DONE maybe?
-@app.route("/stop", methods = ['POST'])
-def stopping():
-    print(request.get_data())
+# @app.route("/stop", methods = ['POST'])
+# def stopping():
+#     print(request.get_data())
 
-    with open("/tmp/esp_code_tmp.py", mode="wb") as f:
-        f.write(prepend + request.get_data() + postpend)
+#     with open("/tmp/esp_code_tmp.py", mode="wb") as f:
+#         f.write(prepend + request.get_data() + postpend)
 
-    robinho_stop(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
+#     robinho_stop(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
 
-    return "Executando"
+#     return "Executando"
 
 
 @app.route("/savecode", methods=['POST'])
