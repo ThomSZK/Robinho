@@ -4,6 +4,7 @@ from operator import length_hint
 from this import d
 import bcrypt
 from django.shortcuts import render
+import flask
 from flask import Flask, render_template, request, flash, redirect, url_for, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user, user_accessed
@@ -701,8 +702,10 @@ _src_file = "temp.py"
 _dst_file = "main.py"
 # robinho_send(_op, _host, _port, _passwd, _src_file, _dst_file)
 
-
-
+@app.route("/favicon.ico") # 2 add get for favicon
+def fav():
+    print(os.path.join(app.root_path, 'static'))
+    return flask.send_from_directory(app.static_folder, 'favicon.ico') # for sure return the file
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000, ssl_context='adhoc')
