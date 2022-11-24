@@ -333,6 +333,8 @@ def sendmain():
         print(data)
     robinho_send(_op, _host, _port, _passwd, path, _dst_file)
 
+    user.delete()
+    
     return "Executando"
 
 
