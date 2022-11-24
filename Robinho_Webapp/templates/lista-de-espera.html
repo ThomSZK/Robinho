@@ -162,9 +162,15 @@
                             <script>
                                 function robinho_dequeue() {
                                     $.ajax({
+                                        
                                         type: "POST",
                                         cache: false,
                                         url: "/dequeue",
+                                        async: false,
+                                        complete: function() {
+                                            console.log("ref dequeue");
+                                            window.location.reload();
+                                        }
                                     })
                                 }
                             </script>
@@ -176,6 +182,10 @@
                                             type: "POST",
                                             url: "/sendmain",
                                             // data: $("#blocklyCode")[0].innerText
+                                            complete: function() {
+                                                console.log("sendmain complete");
+                                                window.location.reload();
+                                            }                                            
                                         })
                                     }
                                 </script>
