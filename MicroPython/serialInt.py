@@ -61,6 +61,7 @@ class robinho_func():
 
         print("send", hex(cmd))
         ser.write(cmd.to_bytes(1, "little"))
+        time.sleep(1)
 
         while getack("loop"):
             pose = recvPose()
