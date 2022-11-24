@@ -138,6 +138,24 @@
 
                     <div class="row form-group">
                         <div class="col-md-12 text-right">
+                            <a href="#" class="btn btn-info btn-icon-split" style="margin-bottom:10px;">
+                                <span class="icon text-white-50">
+                                    <i class="fas fa-retweet"></i>
+                                </span>
+                                <span class="text">Atualizar</span>
+                            </a>
+                            <a href="#" class="btn btn-genius btn-lg" onclick="javascript: placeholder();">
+                                <i class="fas fa-ban"></i>
+                            </a>
+                            <script>
+                                function placeholder(){
+                                    $.ajax({
+                                        type: "POST",
+                                        cache: false,
+                                        url: "/genius",
+                                    })
+                                }
+                            </script>
                             <a href="#" class="btn btn-info btn-lg" onclick="javascript: robinho_dequeue();">
                                 <i class="fas fa-ban"></i>
                             </a>

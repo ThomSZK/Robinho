@@ -310,6 +310,25 @@ robinho_func.blink(1.0, flash)
 
 """
 
+import serial
+
+@app.route("/genius", methods = ['POST'])
+def genius():
+    print('Genius run')
+    with serial.Serial('/dev/ttyACM0', 9600, timeout=1) as ser:
+        time.sleep(2)
+        ser.write(b'r')
+        time.sleep(2)
+        ser.write(b'g')
+        time.sleep(2)
+        ser.write(b'b')
+        time.sleep(2)
+        ser.write(b'y')
+        time.sleep(2)                
+
+    return "Genius ok"
+
+
 @app.route("/sendmain", methods = ['POST', 'GET'])
 def sendmain():
     # print("Request send blockly:" + repr(request.get_data()))
