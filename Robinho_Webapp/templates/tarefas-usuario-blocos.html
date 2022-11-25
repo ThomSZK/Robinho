@@ -19,6 +19,10 @@
     <!-- Custom styles for this template-->
     <link href="{{url_for('static', filename='css/sb-admin-2.min.css')}}" rel="stylesheet">
 
+    <script>
+        var blocklyload = JSON.parse('{{ blocklyload | tojson | safe }}');
+    </script>
+     
 </head>
 
 <body id="page-top">
@@ -87,7 +91,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.user_acc}}</span>
                                 <img class="img-profile rounded-circle"
                                      src="{{url_for('static', filename='img/undraw_profile.svg')}}">
                             </a>
@@ -122,7 +126,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="mb-2 text-gray-800">Tarefa {{task.task_order}} - {{task.task_name}}</h1>
+                    <h1 class="mb-2 text-gray-800">Tarefa - {{task.task_name}}</h1>
 
                     <div class="text-right flex" style="margin-bottom:10px;">
                         <a href="#" class="btn btn-danger btn-lg">
@@ -139,13 +143,21 @@
                                     cache: false,
                                     url: "/savemain",
                                     data: $("#blocklyCode")[0].innerText
-                                })
+                                });
+                                $.ajax({
+                                    type: "POST",
+                                    cache: false,
+                                    url: "/savemain_blockly",
+                                    data: JSON.stringify(Blockly.serialization.workspaces.save(demoWorkspace)),
+                                    contentType: "application/json",
+                                });                              
                             }
                         </script>
                         <a href="#" class="btn btn-success btn-lg" onclick="robinho_send()">
                         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
                         <script>
                             function robinho_send(){
+                                robinho_save();
                                 $.ajax({
                                     type: "POST",
                                     url:"/queue",

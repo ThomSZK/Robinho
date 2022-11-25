@@ -4,6 +4,7 @@ from operator import length_hint
 from this import d
 import bcrypt
 from django.shortcuts import render
+import flask
 from flask import Flask, render_template, request, flash, redirect, url_for, Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user, user_accessed
@@ -24,6 +25,7 @@ import sys
 import os
 import time
 import struct
+import json
 try:
     import usocket as socket
 except ImportError:
@@ -185,7 +187,7 @@ def logout():
 @app.route('/tarefa_aluno', methods=['GET', 'POST'])
 @login_required 
 def tarefa_aluno():
-    return render_template('tarefas-usuario.html')
+    return render_template('tarefas-usuario.html', user = Rob_User.query.filter_by(user_id = current_user.get_id()).first())
 
 @app.route('/tarefa_aluno_bloco', methods=['GET', 'POST'])
 @login_required
@@ -201,7 +203,21 @@ def tarefa_aluno_bloco():
     #     user_task = Rob_Review_Tasks(task_id = task_id, user_id = current_user.get_id())
     #     db.session.add(user_task)
     #     db.session.commit()
-    return render_template('tarefas-usuario-blocos.html', task = task)
+
+    mypath = "./Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.json'
+    try:
+        with open(mypath, mode="r") as f2:
+            jsonc = f2.read()
+        blockly = json.loads(jsonc)
+    except Exception as e:
+        print(e)
+        blockly = None
+
+    return render_template('tarefas-usuario-blocos.html', 
+      task = task, 
+      user = Rob_User.query.filter_by(user_id = current_user.get_id()).first(), 
+      blocklyload = blockly
+    )
 
 
 @app.route('/tarefa_professor', methods=['GET', 'POST'])
@@ -213,15 +229,32 @@ def tarefa_professor():
     #     return render_template('indexRob.html')
     user_tasks = db.session.query(Rob_Review_Tasks, Rob_Tasks, Rob_User).join(Rob_Tasks, Rob_Tasks.task_id == Rob_Review_Tasks.task_id).join(Rob_User, Rob_User.user_id == Rob_Review_Tasks.user_id).order_by(Rob_Review_Tasks.task_id.desc(), Rob_User.user_acc).all()
     print(user_tasks)
-    return render_template('tarefas-professor.html', user_tasks=user_tasks)
+    return render_template('tarefas-professor.html', user_tasks=user_tasks, user = Rob_User.query.filter_by(user_id = current_user.get_id()).first())
 
 @app.route('/tarefa_professor_bloco', methods=['GET', 'POST'])
 @login_required
 def tarefa_professor_bloco():
-    task_id = request.args.get('id')
-    user_id = request.args.get('user')
-    user_task = db.session.query(Rob_Review_Tasks, Rob_Tasks, Rob_User).join(Rob_Tasks, Rob_Tasks.task_id == Rob_Review_Tasks.task_id).join(Rob_User, Rob_User.user_id == Rob_Review_Tasks.user_id).filter(Rob_Review_Tasks.task_id == task_id, Rob_Review_Tasks.user_id == user_id).first()
-    return render_template('tarefas-professor-blocos.html', user_task = user_task)
+    myid = request.args.get('id')
+    task_id, user_id = myid.split('-')
+
+    task = db.session.query(Rob_Review_Tasks, Rob_Tasks, Rob_User).join(Rob_Tasks, Rob_Tasks.task_id == Rob_Review_Tasks.task_id).join(Rob_User, Rob_User.user_id == Rob_Review_Tasks.user_id).filter(Rob_Review_Tasks.task_id == int(task_id)).filter(Rob_Review_Tasks.user_id == int(user_id)).first()
+
+    mypath = "./Tasks/" + str(task.Rob_Tasks.task_id) + "/" + str(task.Rob_Review_Tasks.user_id) + '.json'
+    try:
+        with open(mypath, mode="r") as f2:
+            jsonc = f2.read()
+        blockly = json.loads(jsonc)
+    except Exception as e:
+        print(e)
+        blockly = None
+
+    print("tarefa_professor_bloco", blockly)
+    
+    return render_template('tarefas-professor-blocos.html', 
+    task = task, 
+    user = Rob_User.query.filter_by(user_id = current_user.get_id()).first(),
+    blocklyload = blockly
+    )
 
 @app.route('/video_feed')
 def video_feed():
@@ -235,7 +268,7 @@ def pov_feed():
 @login_required
 def lista_espera():
     queue = db.session.query(Rob_Queue, Rob_Tasks).join(Rob_Tasks, Rob_Tasks.task_id == Rob_Queue.task_id).order_by(Rob_Queue.queue_id).all()
-    return render_template('lista-de-espera.html', queue=queue)
+    return render_template('lista-de-espera.html', queue=queue, user = Rob_User.query.filter_by(user_id = current_user.get_id()).first())
  
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -274,6 +307,7 @@ def greet():
 
 
 prepend = b"""
+
 import machine
 import socket
 import time
@@ -290,26 +324,34 @@ uart = machine.UART(1, 9600, rx=12, tx=13)
 uart.init(9600, bits=8, parity=None, stop=1)
 uart.read()
 
-robinho_func.blink(1.0, flash)
-host = "192.168.101.2"  # as both code is running on same pc
-port = 5070  # socket server port number
-client_socket = socket.socket()  # instantiate
-while True:
-  try:
-    client_socket.connect((host, port))  # connect to the server
-    break
-  except OSError:
-    robinho_func.blink(2.0, flash)
 robinho_func.blink(0.1, flash)
 
 """
 
 postpend = b"""
 
-client_socket.close()
 robinho_func.blink(1.0, flash)
 
 """
+
+import serial
+
+@app.route("/genius", methods = ['POST'])
+def genius():
+    print('Genius run')
+    with serial.Serial('/dev/ttyACM0', 9600, timeout=1) as ser:
+        time.sleep(2)
+        ser.write(b'r')
+        time.sleep(2)
+        ser.write(b'g')
+        time.sleep(2)
+        ser.write(b'b')
+        time.sleep(2)
+        ser.write(b'y')
+        time.sleep(2)                
+
+    return "Genius ok"
+
 
 @app.route("/sendmain", methods = ['POST', 'GET'])
 def sendmain():
@@ -318,21 +360,23 @@ def sendmain():
     user = Rob_Queue.query.first()
     # with open("/tmp/esp_code_tmp.py", mode="wb") as f:
     #     f.write(prepend + request.get_data() + postpend)
-    with open("/Users/thomazSZK/Desktop/Robinho/Robinho_Webapp/Tasks/" + str(user.task_id) + "/" + str(user.user_id) + '.py', mode="r") as f:
+    path = "./Tasks/" + str(user.task_id) + "/" + str(user.user_id) + '.py'
+    with open(path, mode="r") as f:
         data = f.read()
         print(data)
-    path = "/Users/thomazSZK/Desktop/Robinho/Robinho_Webapp/Tasks/" + str(user.task_id) + "/" + str(user.user_id) + '.py'
     robinho_send(_op, _host, _port, _passwd, path, _dst_file)
 
+    user.delete()
+    
     return "Executando"
 
-
-# MUST BE CHANGED TO THE LAB SERVER PATH !!!!!!!
 @app.route("/savemain", methods = ['POST', 'GET'])
 def savemain():
-    print("Request save blockly:" + repr(request.get_data("blockly")))
+    print("Request save py:" + repr(request.get_data("blockly")))
     user_task = Rob_User.query.filter_by(user_id = current_user.get_id()).first()
-    with open("/tmp/esp_code_tmp.py", mode="wb") as f, open("/Users/thomazSZK/Desktop/Robinho/Robinho_Webapp/Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.py', mode="w+") as f2:
+    mypath = "./Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.py'
+    os.makedirs(os.path.dirname(mypath), exist_ok=True)
+    with open("./MicroPython/sample.py", mode="wb") as f, open(mypath, mode="w+") as f2:
         print(2)
         f.write(prepend + request.get_data() + postpend)
         print(3)
@@ -340,6 +384,17 @@ def savemain():
         print(4)
     # robinho_send(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
     return "Blockly Salvo"    
+
+@app.route("/savemain_blockly", methods = ['POST'])
+def savemain_blockly():
+    print("Request save blockly:", request.json)
+    user_task = Rob_User.query.filter_by(user_id = current_user.get_id()).first()
+    mypath = "./Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.json'
+    os.makedirs(os.path.dirname(mypath), exist_ok=True)
+    with open(mypath, mode="w+") as f2:
+        f2.write(json.dumps(request.json))
+    # robinho_send(_op, _host, _port, _passwd, "/tmp/esp_code_tmp.py", _dst_file)
+    return "Blockly json Salvo"   
 
 # TO BE DONE maybe?
 # @app.route("/stop", methods = ['POST'])
@@ -401,7 +456,6 @@ def review():
     user_task.task_grade = task_grade
     db.session.commit()
     return 'Reviewed!'
-
 
 
 # --------------------------------------------------------------
@@ -705,8 +759,10 @@ _src_file = "temp.py"
 _dst_file = "main.py"
 # robinho_send(_op, _host, _port, _passwd, _src_file, _dst_file)
 
-
-
+@app.route("/favicon.ico") # 2 add get for favicon
+def fav():
+    print(os.path.join(app.root_path, 'static'))
+    return flask.send_from_directory(app.static_folder, 'favicon.ico') # for sure return the file
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000, ssl_context='adhoc')

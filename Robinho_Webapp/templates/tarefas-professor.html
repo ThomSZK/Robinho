@@ -98,7 +98,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{user.user_acc}}</span>
                                 <img class="img-profile rounded-circle"
                                      src="{{url_for('static', filename='img/undraw_profile.svg')}}">
                             </a>
@@ -150,7 +150,7 @@
                                     </thead>
                                     <tbody>
                                         {% for task in user_tasks %}
-                                        <tr id="{{task.Rob_Tasks.task_id}}&user={{task.Rob_User.user_id}}">
+                                        <tr id="{{task.Rob_Tasks.task_id}}-{{task.Rob_Review_Tasks.user_id}}">
                                             <td>
                                                 <input type="hidden" value="{{task.Rob_Tasks.task_id}}">
                                             </td>

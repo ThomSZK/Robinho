@@ -124,7 +124,7 @@ Blockly.Blocks['camera_cor'] = {
             .appendField("cor da camera");
         this.setOutput(true, null);
         this.setColour(230);
-        this.setTooltip("Retorna a cor lida pela câmera");
+        this.setTooltip("Retorna a cor lida pela cï¿½mera");
         this.setHelpUrl("");
     }
 };
@@ -328,6 +328,10 @@ var demoWorkspace = Blockly.inject('blocklyDiv',
         toolbox: toolbox
     });
 
+if((typeof blocklyload !== 'undefined') && blocklyload) {
+    Blockly.serialization.workspaces.load(blocklyload, demoWorkspace);
+}
+
 demoWorkspace.addChangeListener(showCode);
 
 Blockly.Python['mover'] = function (block) {
@@ -349,6 +353,10 @@ Blockly.Python['mover'] = function (block) {
 Blockly.Python['for_repetir'] = function (block) {
     var number_i = block.getFieldValue('i');
     var statements_name = Blockly.Python.statementToCode(block, 'NAME');
+    if (!statements_name) {
+        statements_name = "  pass\n"
+    }
+    
 
     var code = 'for i in range(' + number_i + '):\n' +
         statements_name + '\n';
@@ -362,7 +370,15 @@ Blockly.Python['while_enquanto'] = function (block) {
         dropdown_tipo = '==';
     var value_b = Blockly.Python.valueToCode(block, 'b', Blockly.Python.ORDER_ATOMIC);
     var statements_name = Blockly.Python.statementToCode(block, 'NAME');
-
+    if (!statements_name) {
+        statements_name = "  pass\n"
+    }
+    if (!value_a) {
+        value_a = "False"
+    }
+    if (!value_b) {
+        value_b = "False"
+    }
     var code = 'while ' + value_a + ' ' + dropdown_tipo + ' ' + value_b + ':\n' +
         statements_name + '\n';
     return code;
@@ -411,9 +427,18 @@ Blockly.Python['virar'] = function (block) {
 
 Blockly.Python['se_senao'] = function (block) {
     var value_se = Blockly.Python.valueToCode(block, 'se', Blockly.Python.ORDER_ATOMIC);
-    var statements_faca = Blockly.Python.statementToCode(block, 'faca');
-    var statements_faca_senao = Blockly.Python.statementToCode(block, 'faca_senao');
+    if (!value_se) {
+        value_se = "False"
+    }
 
+    var statements_faca = Blockly.Python.statementToCode(block, 'faca');
+    if (!statements_faca) {
+        statements_faca = "  pass\n"
+    }
+    var statements_faca_senao = Blockly.Python.statementToCode(block, 'faca_senao');
+    if (!statements_faca_senao) {
+        statements_faca_senao = "  pass\n"
+    }
     var code = 'if ' + value_se + ':\n' +
         statements_faca +
         'else:\n' +
@@ -422,24 +447,26 @@ Blockly.Python['se_senao'] = function (block) {
 };
 
 Blockly.Python['camera_cor'] = function (block) {
-    var code = 'robinho_func.read_camera_color(uart);\n';
+    var code = 'robinho_func.read_camera_color(uart)\n';
     return [code, Blockly.Python.ORDER_ATOMIC];
 };
 
 Blockly.Python['abrir_garra'] = function (block) {
-    var code = 'robinho_func.arduino_cmd(0b00011010, uart);\n';
+    var code = 'robinho_func.arduino_cmd(0b00011011, uart)\n';
     return code;
 };
 
 Blockly.Python['fechar_garra'] = function (block) {
-    var code = 'robinho_func.arduino_cmd(0b00011011, uart);\n';
+    var code = 'robinho_func.arduino_cmd(0b00011010, uart)\n';
     return code;
 };
 
 Blockly.Python['atribuicao_variavel'] = function (block) {
     var variable_var = Blockly.Python.nameDB_.getName(block.getFieldValue('var'), Blockly.Names.NameType.VARIABLE);
     var value_valor = Blockly.Python.valueToCode(block, 'valor', Blockly.Python.ORDER_ATOMIC);
-
+    if(!value_valor) {
+        value_valor = "None"
+    }
     var code = variable_var + ' = ' + value_valor + '\n';
     return code;
 };
