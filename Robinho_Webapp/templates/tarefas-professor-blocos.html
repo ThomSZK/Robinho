@@ -181,16 +181,18 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="mb-2 text-gray-800">Tarefa {{task.task_order}} - {{task.task_name}}</h1>
+                    <h1 class="mb-2 text-gray-800">Tarefa {{user_task.Rob_Tasks.task_order}} - {{user_task.Rob_Tasks.task_name}}</h1>
+                    <input id="task_id_HF" type="hidden" value="{{user_task.Rob_Tasks.task_id}}" />
+                    <input id="user_id_HF" type="hidden" value="{{user_task.Rob_User.user_id}}" />
 
                     <div class="text-right flex" style="margin-bottom:10px;">
-                        <a href="#" class="btn btn-danger btn-lg">
+                        <a title="Parar" href="#" class="btn btn-danger btn-lg">
                             <i class="fas fa-ban"></i>
                         </a>
-                        <a href="#" class="btn btn-warning btn-lg">
+                        <a title="Avaliar" href="#" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#ReviewModal">
                             <i class="fas fa-award"></i>
                         </a>
-                        <a href="#" class="btn btn-success btn-lg">
+                        <a title="Executar" href="#" class="btn btn-success btn-lg">
                             <i class="fas fa-play"></i>
                         </a>
                     </div>
@@ -266,6 +268,31 @@
         </div>
     </div>
 
+    <div class="modal fade" id="ReviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Avaliar tarefa</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input id="notaTextBox" type="number" class="form-control" placeholder="Insira uma nota..." max="10" min="0" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" onclick="cancelarReview()">Cancelar</button>
+                    <a class="btn btn-success" onclick="confirmarReview()">Confirmar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap core JavaScript-->
     <script src="{{url_for('static', filename='vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
@@ -282,6 +309,34 @@
     <script src="https://unpkg.com/browse/blockly/blockly_compressed.js"></script>
     <script src="https://unpkg.com/browse/blockly/blocks_compressed.js"></script>
     <script src="https://unpkg.com/browse/blockly/msg/pt-br.js"></script>
+
+    <script>
+        function cancelarReview() {
+            $('#ReviewModal').modal('hide');
+            $('#notaTextBox').val('');
+        };
+
+        function confirmarReview() {
+            var nota = $('#notaTextBox').val();
+
+            var user_id = $('#user_id_HF').val();
+            var task_id = $('#task_id_HF').val();
+
+            $.ajax({
+                type: "GET",
+                url: "/review",
+                data: {
+                    'task_grade': nota,
+                    'task_id': task_id,
+                    'user_id': user_id
+                },
+                contentType: 'application/json; charset=utf-8'
+            });
+
+            $('#ReviewModal').modal('hide');
+            $('#notaTextBox').val('');
+        };
+    </script>
 
 </body>
 

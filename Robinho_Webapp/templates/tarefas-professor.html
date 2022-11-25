@@ -150,7 +150,7 @@
                                     </thead>
                                     <tbody>
                                         {% for task in user_tasks %}
-                                        <tr id="{{task.Rob_Tasks.task_id}}">
+                                        <tr id="{{task.Rob_Tasks.task_id}}&user={{task.Rob_User.user_id}}">
                                             <td>
                                                 <input type="hidden" value="{{task.Rob_Tasks.task_id}}">
                                             </td>

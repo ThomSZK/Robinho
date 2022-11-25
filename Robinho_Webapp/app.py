@@ -219,8 +219,9 @@ def tarefa_professor():
 @login_required
 def tarefa_professor_bloco():
     task_id = request.args.get('id')
-    task = Rob_Tasks.query.get(int(task_id))
-    return render_template('tarefas-professor-blocos.html', task = task)
+    user_id = request.args.get('user')
+    user_task = db.session.query(Rob_Review_Tasks, Rob_Tasks, Rob_User).join(Rob_Tasks, Rob_Tasks.task_id == Rob_Review_Tasks.task_id).join(Rob_User, Rob_User.user_id == Rob_Review_Tasks.user_id).filter(Rob_Review_Tasks.task_id == task_id, Rob_Review_Tasks.user_id == user_id).first()
+    return render_template('tarefas-professor-blocos.html', user_task = user_task)
 
 @app.route('/video_feed')
 def video_feed():
@@ -386,6 +387,20 @@ def dequeue():
     db.session.commit()
     return 'Dequeued!'
 
+
+@app.route("/review", methods=['GET'])
+def review():
+    task_id = request.args.get('task_id')
+    user_id = request.args.get('user_id')
+    task_grade = request.args.get('task_grade')
+
+    print('TASK: ' + request.args.get('task_id'))
+    print('USER: ' + user_id)
+    
+    user_task = Rob_Review_Tasks.query.filter_by(task_id = task_id, user_id = user_id).first()
+    user_task.task_grade = task_grade
+    db.session.commit()
+    return 'Reviewed!'
 
 
 
