@@ -1,10 +1,7 @@
 Blockly.Blocks['mover'] = {
     init: function () {
         this.appendDummyInput()
-            .appendField("MOVER");
-        this.appendDummyInput()
-            .appendField("Direcao")
-            .appendField(new Blockly.FieldDropdown([["Frente", "F"], ["Tras", "T"]]), "direcao");
+            .appendField("ANDAR");
         this.appendDummyInput()
             .appendField("Quantidade")
             .appendField(new Blockly.FieldNumber(1, 1, 15), "quantidade");
@@ -69,10 +66,10 @@ Blockly.Blocks['ler_cor'] = {
 
 Blockly.Blocks['acender_led'] = {
     init: function () {
-        var field = new Blockly.FieldColour('#ffff00');
+        var field = new Blockly.FieldColour('#00ff00');
         field.setColours(
-            ['#00ff00', '#ffff00', '#ff0000', '#ff00ff', '#0000ff', '#00ffff', '#ffffff'],
-            ['verde', 'amarelo', 'vermelho', 'rosa', 'azul', 'ciano', 'branco']);
+            ['#00ff00', '#ff0000', '#ff00ff', '#0000ff', '#00ffff', '#ffffff'],
+            ['verde', 'vermelho', 'magenta', 'azul', 'ciano', 'branco']);
         this.appendDummyInput()
             .appendField("acender led")
             .appendField(field, "cor");
@@ -182,10 +179,10 @@ Blockly.Blocks['variavel'] = {
 
 Blockly.Blocks['cor'] = {
     init: function () {
-        var field = new Blockly.FieldColour('#ffff00');
+        var field = new Blockly.FieldColour('#00ff00');
         field.setColours(
-            ['#00ff00', '#ffff00', '#ff0000', '#ff00ff', '#0000ff', '#00ffff', '#ffffff'],
-            ['verde', 'amarelo', 'vermelho', 'rosa', 'azul', 'ciano', 'branco']);
+            ['#00ff00', '#ff0000', '#ff00ff', '#0000ff', '#00ffff', '#ffffff'],
+            ['verde', 'vermelho', 'magenta', 'azul', 'ciano', 'branco']);
         this.appendDummyInput()
             .appendField(field, "NAME");
         this.setOutput(true, null);
@@ -200,79 +197,8 @@ var toolbox = {
     "contents": [
         {
             "kind": "category",
-            "name": "Logica",
-            "colour": "0",
-            "contents": [
-                {
-                    "kind": "block",
-                    "type": "se_senao"
-                },
-                {
-                    "kind": "block",
-                    "type": "logic_compare"
-                },
-                {
-                    "kind": "block",
-                    "type": "logic_operation"
-                },
-                {
-                    "kind": "block",
-                    "type": "logic_boolean"
-                },
-            ]
-        },
-        {
-            "kind": "category",
-            "name": "Loop",
-            "colour": "45",
-            "contents": [
-                {
-                    "kind": "block",
-                    "type": "for_repetir"
-                },
-                {
-                    "kind": "block",
-                    "type": "while_enquanto"
-                },
-            ]
-        },
-        {
-            "kind": "category",
-            "name": "Matematica",
-            "colour": "90",
-            "contents": [
-                {
-                    "kind": "block",
-                    "type": "math_arithmetic"
-                },
-            ]
-        },
-        {
-            "kind": "category",
-            "name": "Valores",
-            "colour": "135",
-            "contents": [
-                {
-                    "kind": "block",
-                    "type": "math_number",
-                    "fields": {
-                        "NUM": 123
-                    }
-                },
-                {
-                    "kind": "block",
-                    "type": "text"
-                },
-                {
-                    "kind": "block",
-                    "type": "cor"
-                },
-            ]
-        },
-        {
-            "kind": "category",
             "name": "Funcoes",
-            "colour": "180",
+            "colour": "0",
             "contents": [
                 {
                     "kind": "block",
@@ -301,6 +227,77 @@ var toolbox = {
                 {
                     "kind": "block",
                     "type": "fechar_garra"
+                },
+            ]
+        },
+        {
+            "kind": "category",
+            "name": "Logica",
+            "colour": "45",
+            "contents": [
+                {
+                    "kind": "block",
+                    "type": "se_senao"
+                },
+                {
+                    "kind": "block",
+                    "type": "logic_compare"
+                },
+                {
+                    "kind": "block",
+                    "type": "logic_operation"
+                },
+                {
+                    "kind": "block",
+                    "type": "logic_boolean"
+                },
+            ]
+        },
+        {
+            "kind": "category",
+            "name": "Loop",
+            "colour": "90",
+            "contents": [
+                {
+                    "kind": "block",
+                    "type": "for_repetir"
+                },
+                {
+                    "kind": "block",
+                    "type": "while_enquanto"
+                },
+            ]
+        },
+        {
+            "kind": "category",
+            "name": "Matematica",
+            "colour": "135",
+            "contents": [
+                {
+                    "kind": "block",
+                    "type": "math_arithmetic"
+                },
+            ]
+        },
+        {
+            "kind": "category",
+            "name": "Valores",
+            "colour": "180",
+            "contents": [
+                {
+                    "kind": "block",
+                    "type": "math_number",
+                    "fields": {
+                        "NUM": 123
+                    }
+                },
+                {
+                    "kind": "block",
+                    "type": "text"
+                },
+                {
+                    "kind": "block",
+                    "type": "cor"
                 },
             ]
         },
@@ -335,17 +332,10 @@ if((typeof blocklyload !== 'undefined') && blocklyload) {
 demoWorkspace.addChangeListener(showCode);
 
 Blockly.Python['mover'] = function (block) {
-    var dropdown_direcao = block.getFieldValue('direcao');
     var number_quantidade = block.getFieldValue('quantidade');
 
-    var cod_dir = null;
-    if (dropdown_direcao == 'F')
-        cod_dir = '00';
-    else if (dropdown_direcao == 'T')
-        cod_dir = '01';
-
     code = 'for i in range (' + number_quantidade + '):\n' +
-        '  robinho_func.arduino_cmd(0b000111' + cod_dir + ', uart)\n';
+        '  robinho_func.arduino_cmd(0b00011100, uart)\n';
 
     return code;
 };
