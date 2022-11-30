@@ -58,3 +58,46 @@ CREATE table Rob_Queue (
 	User_Name varchar(255) not null,
 	Task_Id integer not null
 );
+
+ALTER TABLE Rob_Tasks
+ADD COLUMN Task_Description VARCHAR(1000);
+
+UPDATE Rob_Tasks
+SET Task_Description = 'Os LEDs do robô deverão ser acesos em qualquer cor.'
+WHERE Task_Id = 1;
+
+UPDATE Rob_Tasks
+SET Task_Description = 'O robô deverá realizar movimentos de tal maneira que seja formado um quadrado. Ao fim da tarefa, o robô deverá estar na posição inicial.'
+WHERE Task_Id = 2;
+
+UPDATE Rob_Tasks
+SET Task_Description = 'O robô deverá ir até a posição inicial do trajeto, e então percorrer ele até o destino final. O trajeto pode ser definido de qualquer forma, contando que respeite as seguintes posições: Posição inicial: (10, 4); Posição final: (5, 1).'
+WHERE Task_Id = 3;
+
+UPDATE Rob_Tasks
+SET Task_Description = 'O robô deverá identificar a cor do chão através do sensor de cor.'
+WHERE Task_Id = 4;
+
+UPDATE Rob_Tasks
+SET Task_Description = 'O robô deverá encontrar o quadrado vermelho no chão e piscar os LEDs na mesma cor.'
+WHERE Task_Id = 5;
+
+UPDATE Rob_Tasks
+SET Task_Description = 'O robô deverá pressionar os botões da arena na seguinte sequência: 3-2-4-1'
+WHERE Task_Id = 6;
+
+UPDATE Rob_Tasks
+SET Task_Description = 'O robô deverá encontrar e pegar a caixa azul.'
+WHERE Task_Id = 7;
+
+UPDATE Rob_Tasks
+SET Task_Description = 'O robô deverá entrar no labirinto com o objetivo de encontrar a região com paredes verdes. Assim que encontrar, ele deverá piscar os LEDs na mesma cor.'
+WHERE Task_Id = 8;
+
+UPDATE Rob_Tasks
+SET Task_Description = 'O robô deverá encontrar o bloco da cor amarela, piscar os LEDs indicando a cor encontrada e levar o bloco até a posição de mesma cor.'
+WHERE Task_Id = 9;
+
+UPDATE Rob_Tasks
+SET Task_Description = 'O robô deverá observar a sequência de cor mostrada pelo LED da arena e, então, apertar os botões correspondentes na mesma sequência.'
+WHERE Task_Id = 10;

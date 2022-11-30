@@ -108,6 +108,7 @@ class Rob_Tasks(db.Model, UserMixin):
     task_name = db.Column(db.VARCHAR(255), nullable = False)
     task_level = db.Column(db.INTEGER, nullable = False)
     task_order = db.Column(db.INTEGER, nullable = False)
+    task_description = db.Column(db.VARCHAR(1000))
 
 
 class Rob_Review_Tasks(db.Model, UserMixin):
