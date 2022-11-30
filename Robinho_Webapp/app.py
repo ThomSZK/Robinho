@@ -170,12 +170,9 @@ def select():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        print(1)
         user = Rob_User.query.filter_by(user_acc = form.User_Acc.data).first()
         if user:
-            print(2)
-            if True or bcrypt.check_password_hash(user.user_password, form.User_Password.data):
-                print(3)
+            if bcrypt.check_password_hash(user.user_password, form.User_Password.data):
                 login_user(user, remember=True)
                 # print(user.user_id)
                 return redirect(url_for('dashboard'))
