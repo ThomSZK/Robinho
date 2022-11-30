@@ -228,7 +228,7 @@
                         targets: -4,
                         data: null,
                         render: function (data, type, row, meta) {
-                            return '<a href="{{url_for("tarefa_professor_bloco")}}?id=' + row.DT_RowId.replace('row_', '') + '" class="btn btn-sm"><i class="fas fa-eye"></i></a>';
+                            return '<a href="{{url_for("tarefa_professor_bloco")}}?id=' + row.DT_RowId.replace('row_', '') + '" class="btn btn-sm" title="Visualizar"><i class="fas fa-eye"></i></a>';
                         }
                     },
                 ],
