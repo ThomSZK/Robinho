@@ -327,6 +327,7 @@ def greet():
 
 
 prepend = b"""
+print("start prepend main")
 
 import machine
 import socket
@@ -345,19 +346,23 @@ uart.init(9600, bits=8, parity=None, stop=1)
 uart.read()
 
 robinho_func.blink(0.1, flash)
-robinho_func.arduino_cmd(uart, 0x18)
-robinho_func.arduino_cmd(uart, 0x16)
+robinho_func.arduino_cmd(0x18, uart)
+robinho_func.arduino_cmd(0x16, uart)
 robinho_func.blink(0.1, flash)
+
+print("end prepend main")
 
 """
 
 postpend = b"""
+print("start postpend main")
 
 robinho_func.blink(1.0, flash)
 time.sleep(2)
-robinho_func.arduino_cmd(uart, 0x18)
-robinho_func.arduino_cmd(uart, 0x16)
+robinho_func.arduino_cmd(0x18, uart)
+robinho_func.arduino_cmd(0x16, uart)
 robinho_func.blink(1.0, flash)
+print("end postpend main")
 
 """
 
