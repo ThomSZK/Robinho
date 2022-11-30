@@ -55,12 +55,22 @@
             <hr class="sidebar-divider">
 
             <!-- Nav Item - Tarefas -->
+            {% if user.user_type == 1 %}
             <li class="nav-item">
                 <a class="nav-link" href="{{url_for('tarefa_professor')}}">
                     <i class="fas fa-fw fa-tasks"></i>
                     <span>Tarefas</span>
                 </a>
             </li>
+
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('tarefa_aluno')}}">
+                    <i class="fas fa-fw fa-tasks"></i>
+                    <span>Tarefas</span>
+                </a>
+            </li>
+            {% endif %}
 
             <!-- Nav Item - Lista de espera -->
             <li class="nav-item active">
@@ -122,16 +132,13 @@
 
                     <!-- Page Heading -->
                     <h1 class="mb-2 text-gray-800">Lista de espera</h1>
-
+                    {% if user.user_type == 1 %}
                     <div class="row form-group">
                         <div class="col-md-12 text-right">
-                            <a href="#" class="btn btn-info btn-icon-split" style="margin-bottom:10px;" onclick="javascript: window.location.reload();">
-                                <span class="icon text-white-50">
-                                    <i class="fas fa-retweet"></i>
-                                </span>
-                                <span class="text">Atualizar</span>
+                            <a href="#" class="btn btn-info btn-lg" onclick="javascript: window.location.reload();" title="Atualizar">
+                                <i class="fas fa-retweet"></i>
                             </a>
-                            <a href="#" class="btn btn-info btn-lg" onclick="javascript: genius();">
+                            <a href="#" class="btn btn-primary btn-lg" onclick="javascript: genius();" title="Iniciar Genius">
                                 <i class="fas fa-traffic-light"></i>
                             </a>
                             <script>
@@ -143,7 +150,7 @@
                                     })
                                 }
                             </script>
-                            <a href="#" class="btn btn-warning btn-lg" onclick="javascript: robinho_dequeue();">
+                            <a href="#" class="btn btn-danger btn-lg" onclick="javascript: robinho_dequeue();" title="Remover da fila">
                                 <i class="fas fa-ban"></i>
                             </a>
                             <script>
@@ -161,7 +168,7 @@
                                     })
                                 }
                             </script>
-                            <a href="#" class="btn btn-success btn-lg" onclick="robinho_send()">
+                            <a href="#" class="btn btn-success btn-lg" onclick="robinho_send()" title="Executar">
                                 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
                                 <script>
                                     function robinho_send() {
@@ -180,6 +187,7 @@
                             </a>
                         </div>
                     </div>
+                    {% endif %}
 
                     <!-- Tabela de tarefas -->
                     <div class="card shadow mb-4">
@@ -188,7 +196,6 @@
                                 <table class="table table-bordered" id="listaDeEspera" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th style="width:1px;" class="text-center">Ações</th>
                                             <th style="width:1px;">Posição</th>
                                             <th class="text-center">Usuário</th>
                                             <th class="text-center">Tarefa</th>
@@ -197,7 +204,6 @@
                                     <tbody>
                                         {% for q in queue %}
                                         <tr>
-                                            <td></td>
                                             <td class="text-center">{{loop.index}}</td>
                                             <td class="text-center">{{q.Rob_Queue.user_name}}</td>
                                             <td class="text-center">Tarefa {{q.Rob_Tasks.task_order}} - {{q.Rob_Tasks.task_name}}</td>
@@ -274,15 +280,6 @@
     <script>
         $(document).ready(function () {
             var table = $('#listaDeEspera').DataTable({
-                columnDefs: [
-                    {
-                        targets: -4,
-                        data: null,
-                        defaultContent: '<div style="display: flex;"><a href="#" class="btn btn-sm"><i class="fas fa-times"></i></a>' +
-                            '<a href="#" class="btn btn-sm"><i class="fas fa-sort"></i></a>' +
-                            '<a href="#" class="btn btn-sm"><i class="fas fa-star"></i></a></div>',
-                    },
-                ],
                 "language": {
                     "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Portuguese-Brasil.json"
                 }
