@@ -68,8 +68,8 @@ Blockly.Blocks['acender_led'] = {
     init: function () {
         var field = new Blockly.FieldColour('#00ff00');
         field.setColours(
-            ['#00ff00', '#ff0000', '#ff00ff', '#0000ff', '#00ffff', '#ffffff'],
-            ['verde', 'vermelho', 'magenta', 'azul', 'ciano', 'branco']);
+            ['#00ff00', '#ffff00', '#ff0000', '#ff00ff', '#0000ff', '#00ffff', '#ffffff'],
+            ['verde', 'amarelo', 'vermelho', 'magenta', 'azul', 'ciano', 'branco']);
         this.appendDummyInput()
             .appendField("acender led")
             .appendField(field, "cor");
@@ -181,8 +181,8 @@ Blockly.Blocks['cor'] = {
     init: function () {
         var field = new Blockly.FieldColour('#00ff00');
         field.setColours(
-            ['#00ff00', '#ff0000', '#ff00ff', '#0000ff', '#00ffff', '#ffffff'],
-            ['verde', 'vermelho', 'magenta', 'azul', 'ciano', 'branco']);
+            ['#00ff00', '#ffff00', '#ff0000', '#ff00ff', '#0000ff', '#00ffff', '#ffffff'],
+            ['verde', 'amarelo', 'vermelho', 'magenta', 'azul', 'ciano', 'branco']);
         this.appendDummyInput()
             .appendField(field, "NAME");
         this.setOutput(true, null);
