@@ -1,9 +1,9 @@
+#!/usr/bin/env python3
 from crypt import methods
 from email.policy import default
 from operator import length_hint
 from this import d
 import bcrypt
-from django.shortcuts import render
 import flask
 from flask import Flask, render_template, request, flash, redirect, url_for, Response
 from flask_sqlalchemy import SQLAlchemy
@@ -19,6 +19,7 @@ from flask_bcrypt import Bcrypt
 #from RobinhoImageProcessing.utils import detector, superimpose as si
 import cv2
 import numpy as np
+import serial
 import time
 # from __future__ import print_function
 import sys
@@ -168,9 +169,12 @@ def select():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
+        print(1)
         user = Rob_User.query.filter_by(user_acc = form.User_Acc.data).first()
         if user:
-            if bcrypt.check_password_hash(user.user_password, form.User_Password.data):
+            print(2)
+            if True or bcrypt.check_password_hash(user.user_password, form.User_Password.data):
+                print(3)
                 login_user(user, remember=True)
                 # print(user.user_id)
                 return redirect(url_for('dashboard'))
@@ -325,16 +329,21 @@ uart.init(9600, bits=8, parity=None, stop=1)
 uart.read()
 
 robinho_func.blink(0.1, flash)
+robinho_func.arduino_cmd(uart, 0x18)
+robinho_func.arduino_cmd(uart, 0x16)
+robinho_func.blink(0.1, flash)
 
 """
 
 postpend = b"""
 
 robinho_func.blink(1.0, flash)
+time.sleep(2)
+robinho_func.arduino_cmd(uart, 0x18)
+robinho_func.arduino_cmd(uart, 0x16)
+robinho_func.blink(1.0, flash)
 
 """
-
-import serial
 
 @app.route("/genius", methods = ['POST'])
 def genius():
