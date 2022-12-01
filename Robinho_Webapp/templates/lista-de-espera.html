@@ -176,9 +176,13 @@
                                             type: "POST",
                                             url: "/sendmain",
                                             // data: $("#blocklyCode")[0].innerText
-                                            complete: function () {
+                                            success: function () {
                                                 console.log("sendmain complete");
-                                                window.location.reload();
+                                                window.location.replace("dashboard");
+                                            },
+                                            error: function () {
+                                                console.log("sendmain fail");
+                                                window.alert("Falha ao executar tarefa");
                                             }
                                         })
                                     }

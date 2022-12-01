@@ -157,7 +157,10 @@
                                     $.ajax({
                                         type: "POST",
                                         url: "/queue",
-                                        // data: $("#blocklyCode")[0].innerText
+                                        success: function () {
+                                            console.log("sendmain complete");
+                                            window.location.replace("lista_espera")
+                                        }
                                     })
                                 }
                             </script>
