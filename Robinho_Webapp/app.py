@@ -207,7 +207,7 @@ def logout():
 @app.route('/tarefa_aluno', methods=['GET', 'POST'])
 @login_required 
 def tarefa_aluno():
-    return render_template('tarefas-usuario.html', user = Rob_User.query.filter_by(user_id = current_user.get_id()).first())
+    return render_template('tarefas-usuario.html', user = Rob_User.query.filter_by(user_id = current_user.get_id()).first(), tasks = Rob_Tasks.query.order_by(Rob_Tasks.task_level, Rob_Tasks.task_order).all())
 
 @app.route('/tarefa_aluno_bloco', methods=['GET', 'POST'])
 @login_required
