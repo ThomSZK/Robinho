@@ -192,8 +192,10 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.user_password, form.User_Password.data):
                 login_user(user, remember=True)
-                # print(user.user_id)
-                return redirect(url_for('dashboard'))
+                if user.user_type == 2:
+                    return render_template('tarefas-usuario.html', user = Rob_User.query.filter_by(user_id = current_user.get_id()).first(), tasks = Rob_Tasks.query.order_by(Rob_Tasks.task_level, Rob_Tasks.task_order).all())
+                elif user.user_type == 1:
+                    return redirect(url_for('dashboard'))
     return render_template("login.html", form=form)
 
 
@@ -311,6 +313,9 @@ def register():
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
+    # if current_user.user_type == 2:
+    #     return render_template('tarefas-usuario.html', user = Rob_User.query.filter_by(user_id = current_user.get_id()).first(), tasks = Rob_Tasks.query.order_by(Rob_Tasks.task_level, Rob_Tasks.task_order).all())
+    # else: 
     return render_template('indexRob.html', user=current_user)
 
 
