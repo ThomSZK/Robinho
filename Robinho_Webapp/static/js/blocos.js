@@ -331,10 +331,18 @@ if((typeof blocklyload !== 'undefined') && blocklyload) {
 
 demoWorkspace.addChangeListener(showCode);
 
+function isLetter(str) {
+    return str.length === 1 && str.match(/[a-z]/i);
+}
+
+function blockid_to_pyid(bid) {
+    return '_' + Array.from(bid).filter(isLetter).join("")
+}
+
 Blockly.Python['mover'] = function (block) {
     var number_quantidade = block.getFieldValue('quantidade');
 
-    code = 'for i in range (' + number_quantidade + '):\n' +
+    code = 'for ' + blockid_to_pyid(block.id) + ' in range (' + number_quantidade + '):\n' +
         '  robinho_func.arduino_cmd(0b00011100, uart)\n';
 
     return code;
@@ -348,7 +356,7 @@ Blockly.Python['for_repetir'] = function (block) {
     }
     
 
-    var code = 'for i in range(' + number_i + '):\n' +
+    var code = 'for ' + blockid_to_pyid(block.id) + ' in range(' + number_i + '):\n' +
         statements_name + '\n';
     return code;
 };
