@@ -84,7 +84,7 @@ def genPov():
 
         while True:
 
-            data,addr = rxSocket.recvfrom(15000)
+            data,addr = rxSocket.recvfrom(1000000)
 
             frames+=1
             frame = np.asarray(bytearray(data), dtype=np.uint8)
