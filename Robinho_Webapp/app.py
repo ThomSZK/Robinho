@@ -28,10 +28,9 @@ import os
 import time
 import struct
 import json
-try:
-    import usocket as socket
-except ImportError:
-    import socket
+import socket
+import random
+import threading
 
 
 USER_QUEUE = []
@@ -373,20 +372,32 @@ print("end postpend main")
 
 """
 
+GENIUSHOSTPORTS = [("192.168.101.3", 5071)]
+
+def genius_send(data):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    for hostport in GENIUSHOSTPORTS:
+        sock.sendto(data, hostport)
+    sock.close()
+
 @app.route("/genius", methods = ['POST'])
 def genius():
     print('Genius run')
     with serial.Serial('/dev/ttyACM0', 9600, timeout=1) as ser:
-        time.sleep(2)
-        ser.write(b'r')
-        time.sleep(2)
-        ser.write(b'g')
-        time.sleep(2)
-        ser.write(b'b')
-        time.sleep(2)
-        ser.write(b'y')
-        time.sleep(2)                
+        command, color = random.choice([(b'r', b"#ff0000")])
+        print(command, color)
+        ser.write(command)
+        for _ in range(100):
+            print("sending genius")
+            genius_send(color)
+            time.sleep(5)
 
+        """
+        ser.write(b'g')
+        ser.write(b'b')
+        ser.write(b'y')
+        time.sleep(2)  
+        """              
     return "Genius ok"
 
 
