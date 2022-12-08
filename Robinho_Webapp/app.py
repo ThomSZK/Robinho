@@ -72,33 +72,22 @@ def readImagemFrom(url):
     arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
     return cv2.imdecode(arr, -1) # 'Load it as it is'
 
-def genPov():
+def genPov():  
+    #camera = cv2.VideoCapture(-1)
     frames=0
-
-    try:
-        rxSocket = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-        rxSocket.bind(("192.168.101.2",5000))
-        print("Socket connected to ESP32")
-    
-
-        while True:
-
-            data,addr = rxSocket.recvfrom(1000000)
-
-            frames+=1
-            frame = np.asarray(bytearray(data), dtype=np.uint8)
-            #frame = cv2.imread('/home/arena/Documents/GitHub/Robinho/Robinho_Webapp/images/feed.png')
-            if frame is not None:
-                buffer = cv2.imdecode(frame, -1)
-                cv2.imwrite('pov.png', buffer)
-                ret, buffer = cv2.imencode('.jpg', buffer)
-                frame = buffer.tobytes()
-                yield (b'--frame\r\n'
-                        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
-    except:
-        print("ERROR: Socket connect to esp")
-        rxSocket.close()
-        yield(b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + b'\r\n')
+    while True:
+        #success, frame = camera.read()  # read the camera frame
+        #if not success:
+            #break
+        #else:
+        frames+=1
+        frame = cv2.imread('/home/arena/Documents/GitHub/Robinho/Robinho_Webapp/images/pov_feed.png')
+        time.sleep(0.3)
+        if frame is not None:
+            ret, buffer = cv2.imencode('.jpg', frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
 
 @login_manager.user_loader
 def load_user(user_id):
