@@ -59,7 +59,7 @@ def genFrames():
             #break
         #else:
         frames+=1
-        frame = cv2.imread('./images/feed.png')
+        frame = cv2.imread('/home/arena/Documents/GitHub/Robinho/Robinho_Webapp/images/feed.png')
         time.sleep(0.5)
         if frame is not None:
             ret, buffer = cv2.imencode('.jpg', frame)
@@ -214,7 +214,7 @@ def tarefa_aluno_bloco():
     #     db.session.add(user_task)
     #     db.session.commit()
 
-    mypath = "./Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.json'
+    mypath = "/home/arena/Documents/GitHub/Robinho/Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.json'
     try:
         with open(mypath, mode="r") as f2:
             jsonc = f2.read()
@@ -249,7 +249,7 @@ def tarefa_professor_bloco():
 
     task = db.session.query(Rob_Review_Tasks, Rob_Tasks, Rob_User).join(Rob_Tasks, Rob_Tasks.task_id == Rob_Review_Tasks.task_id).join(Rob_User, Rob_User.user_id == Rob_Review_Tasks.user_id).filter(Rob_Review_Tasks.task_id == int(task_id)).filter(Rob_Review_Tasks.user_id == int(user_id)).first()
 
-    mypath = "./Tasks/" + str(task.Rob_Tasks.task_id) + "/" + str(task.Rob_Review_Tasks.user_id) + '.json'
+    mypath = "/home/arena/Documents/GitHub/Robinho/Tasks/" + str(task.Rob_Tasks.task_id) + "/" + str(task.Rob_Review_Tasks.user_id) + '.json'
     try:
         with open(mypath, mode="r") as f2:
             jsonc = f2.read()
@@ -397,7 +397,7 @@ def sendmain():
     user = Rob_Queue.query.first()
     # with open("/tmp/esp_code_tmp.py", mode="wb") as f:
     #     f.write(prepend + request.get_data() + postpend)
-    path = "./Tasks/" + str(user.task_id) + "/" + str(user.user_id) + '.py'
+    path = "/home/arena/Documents/GitHub/Robinho/Tasks/" + str(user.task_id) + "/" + str(user.user_id) + '.py'
     with open(path, mode="r") as f:
         data = f.read()
         print(data)
@@ -409,9 +409,9 @@ def sendmain():
 def savemain():
     print("Request save py:" + repr(request.get_data("blockly")))
     user_task = Rob_User.query.filter_by(user_id = current_user.get_id()).first()
-    mypath = "./Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.py'
+    mypath = "/home/arena/Documents/GitHub/Robinho/Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.py'
     os.makedirs(os.path.dirname(mypath), exist_ok=True)
-    with open("./MicroPython/sample.py", mode="wb") as f, open(mypath, mode="w+") as f2:
+    with open("/home/arena/Documents/GitHub/Robinho/MicroPython/sample.py", mode="wb") as f, open(mypath, mode="w+") as f2:
         print(2)
         f.write(prepend + request.get_data() + postpend)
         print(3)
@@ -424,7 +424,7 @@ def savemain():
 def savemain_blockly():
     print("Request save blockly:", request.json)
     user_task = Rob_User.query.filter_by(user_id = current_user.get_id()).first()
-    mypath = "./Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.json'
+    mypath = "/home/arena/Documents/GitHub/Robinho/Tasks/" + str(user_task.user_current_task) + "/" + str(current_user.user_id) + '.json'
     os.makedirs(os.path.dirname(mypath), exist_ok=True)
     with open(mypath, mode="w+") as f2:
         f2.write(json.dumps(request.json))
@@ -705,10 +705,8 @@ def robinho_send(op, host, port, passwd, src_file, dst_file):
 
     s = socket.socket()
 
-    ai = socket.getaddrinfo(host, port)
-    addr = ai[0][4]
-
-    s.connect(addr)
+    print((host, port))
+    s.connect((host, port))
 
     #s = s.makefile("rwb")
     client_handshake(s)
@@ -800,4 +798,4 @@ def fav():
     return flask.send_from_directory(app.static_folder, 'favicon.ico') # for sure return the file
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000, ssl_context='adhoc')
+    app.run(debug=True, host='0.0.0.0', port=80, ssl_context='adhoc')
